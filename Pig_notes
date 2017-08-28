@@ -1,0 +1,62 @@
+===================================================================Pig script & use cases====================================================================
+1: Load data from file
+file_data = LOAD 'file.txt<with full path>' using PigStorage(',') as (id:int, name:chararray);
+
+2: Load data from hive table
+table_data = Load 'vivekyadav.orders' using org.apache.hive.hcatalog.pig.HCatLoader() as (order_id:int, order_date:chararray, order_customer_id:int, order_status:chararray);
+
+3: Store data into hive table
+STORE table_data into 'vivekyadav.pig_temp_data' using org.apache.hive.hcatalog.pig.HCatStorer();
+
+4: Diagnostic operators in pig latin:
+>Dump
+>Describe
+>Explain
+>Illustrate
+
+5: Use group function:
+driver_data = LOAD 'driver.csv' using PigStorage as (schema);
+group_data = GROUP driver_data by location;
+group_data = GROUP driver_data by All(we group by using all fields);
+dump group_data;
+describe group_data;
+illustrate group_data;
+
+6: Use of join
+data1 having primary key is id
+data2 having primary key is emp_id
+data1_join_data2 = JOIN data1 by id LEFT JOIN,data2 by emp_id;
+
+7:Use of CROSS : It will return the cortesian product of the two relations
+data1 having 3 records
+data2 having 4 records
+data1-cross_data2 = CROSS data1,data2; --> result will be having 12 records.
+
+8: Use of UNION : It will merge the records of the identical relations
+data1_union_data2 = UNION data1,data2;
+
+9: Use of SPLIT : It will split one relation into more than 1 relation  as per condition applied.
+student_split = SPLIT student into student1 if age>21, student2 if (22<age and age<28); --> So it will return 2 splited relation from student.
+
+10: Use of FILTER : It used to select the required tuples from the relation based on condition.
+student_data_by_location = FILTER student by location='Gurgaon';
+
+11: Use of DISTINCT : It is used to remove the redundant records from the relation.
+distinct_records = DISTINCT student;
+
+12: Use of FOREACH : It used to generate the specified data transformation over full data
+student_specified = FOREACH student generate id,age,city;
+
+13: Use of ORDER BY : It is used to sort th records
+student = ORDER student BY (ASC|DESC)
+
+14: Use of LIMIT : It used to apply limit over full set of records
+student = LIMIT student 10;
+
+15: Use of AVG() function : It is used to calculate the average.
+student_group_all = GROUP student all;
+student_avg_age = FOREACH student_group_all generate (student.id,student.name), AVG(student.age)
+
+16: Use of COUNT() : It used to count the no of records
+student_count = FOREACH student generate COUNT(student.id);
+
