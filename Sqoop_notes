@@ -1,0 +1,106 @@
+********https://www.youtube.com/watch?v=z7MtjZHeNhI&list=PLf0swTFhTI8q4pvjNTcjMPzCYPZIrpPAa**************main playlist
+#Check the sqoop availibility
+>sqoop
+>sqoop help
+
+#Connect with mysql database
+>mysql -u retail_dba -h nn01.itversity.com -p
+>Password:(Enter password)
+
+#List-database command to check the database
+sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity
+
+#To save the data and log of command
+sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 1> list-database.data
+sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 2> list-database.log
+
+#To CRUD operation on RDBMS with sqoop
+sqoop eval --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --query "select * from products limit 10"
+
+#import command to load RDBMS tbale to HDFS
+sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir "/user/vivekyadav/retail_db" 
+
+#Import the table data based on the tablename itself inside the directory
+sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table customers --warehouse-dir "/user/vivekyadav/retail_db"
+
+#Import table with append --> Means data will append on the existing directory with table name and will not overwrite the existing content
+--append
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --warehouse-dir "/user/vivekyadav/retail_db" --append
+
+#This parameter for the sequence file format
+--as-sequencefile
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table customers --warehouse-dir "/user/vivekyadav/retail_db" --as-sequencefile
+
+#We can store the data in form of avro as well with using --as-avrodatafile parameter
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table customers --warehouse-dir "/user/vivekyadav/retail_db" --as-avrodatafile
+
+#We have some avro-tools to convert avro format to json and vice-versa
+>avro-tools tojson file_name.avro >> file_name.json
+
+#If there is no primary key in table, need to use --split-by parameter
+--split-by
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_import" --username retail_dba --password itversity --table order_items_vk --warehouse-dir "/user/vivekyadav/retail_db/retail_vk" --split-by order_item_id
+
+OR 
+
+#We can use -m,--num-mappers or --autoreset-to-one-mapper parameters
+>>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_import" --username retail_dba --password itversity --table order_items_vk --warehouse-dir "/user/vivekyadav/retail_db/retail_vk" --num-mappers 1 or -m 1
+
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_import" --username retail_dba --password itversity --table order_items_vk --warehouse-dir "/user/vivekyadav/retail_db/retail_vk" --autoreset-to-one-mapper
+
+#To restrict the table record use --boundory-query
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_import" --username retail_dba --password itversity --table order_items_vk --warehouse-dir "/user/vivekyadav/retail_db/retail_vk" --boundory-query "select min(order_item_id),max(order_item_id) from order_items_vk where order_item_id not in (1000000)"
+
+
+nd create target directory by using --delete-target-dir
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir /user/vivekyadav/retail_db/order_items --delete-target-dir 
+
+#Create output files in zip format using -z or --compress
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir /user/vivekyadav/retail_db/order_items --delete-target-dir -z
+
+#Use of where clause inside the import command (We can use where clause with tablenot with query)
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir /user/vivekyadav/retail_db/order_items --delete-target-dir --where "order_item_id between 100 and 200"
+
+#Import DBMS table into Hive 
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --hive-import --create-hive-table --hive-database vivekyadav --hive-table order_items
+
+#Import specific columns from the DB table to hive table
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --columns "order_item_id,order_item_order_id,order_item_product_id"  --hive-database vivekyadav --hive-import --hive-overwrite --hive-table custom_order_item
+
+#We can change data type of hive attributes while loading from DB by using --map-column-hive parameter
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table orders  --hive-database vivekyadav --hive-import --hive-overwrite --hive-table custom_orders --map-column-hive order_id=bigint
+
+#We can set delimiter while importing the table into hive same as given in hive table creation
+>create table orders () row format delimited fields terminated by '|'
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table orders --target-dir "/apps/hive/warehouse/vivekyadav.db/orders" --append --fields-terminated-by '|'
+
+#Saving the max attribute value into variable
+>MAX_ORDER_ID=`sqoop eval --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --query "select max(order_id) from orders" 2>/dev/null|grep "^|"|grep -v max|awk -F " " '{print $2}'`
+
+#Importing limited records in hive and then applying incremetal parameters to load delta
+--check-column order_id
+--incremental append
+--last-value 60000
+OR
+we can use --where clause with append 
+
+#Import all tables by using --import-all-tables
+>sqoop import-all-tables --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --warehouse-dir "/user/vivekyadav/import_all_tables" --exclude-tables "departments,categories" --as-avrodatafile
+
+#Importing all tables into hive 
+>sqoop import-all-tables --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --hive-database vivekyadav --hive-import --hive-overwrite
+
+#Exercise : 12 for importing the data to HDFS and hive tables.
+database : nyse
+-->Import nyse data to HDFS
+>sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/nyse" --username nyse_ro --password itversity --table stocks_eod --hive-import --hive-database vivekyadav  --hive-overwrite --split-by  tradedate -m 8 -z
+
+#Export the HDFC data into DBMS
+>sqoop export --connect "jdbc:mysql://nn01.itversity.com:3306/retail_export" \
+--username retail_dba \
+--password itversity \
+--export-dir "/user/vivekyadav/import_all_tables/orders" \
+--table vi_orders
+
+#To check the occupied space by file in hdfs
+>hadoop fs -du -s(summarize) -h(human understandable) /user/vivekyadav/import_all_tables/orders
