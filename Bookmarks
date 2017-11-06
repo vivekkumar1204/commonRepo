@@ -10,3 +10,18 @@ Hadoop architecture : http://www.journaldev.com/8800/hadoop-architecture-yarn-hd
 Hive concepts : http://hadooptutorial.info/bucketing-in-hive/
 Hadoop performence tunning : http://hadoopinrealworld.com/how-do-you-debug-a-performance-issue-or-a-long-running-job/
 Unix basic commands : https://www.cs.colostate.edu/helpdocs/vi.html
+-----------------------------------------------
+Hadoop links:
+http://hadoopinrealworld.com/how-do-you-debug-a-performance-issue-or-a-long-running-job/
+http://hadooptutorial.info/bucketing-in-hive/
+https://www.qubole.com/blog/5-tips-for-efficient-hive-queries/
+https://www.qubole.com/resources/5-tips-creating-effective-hive-queries-secrets-pros/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.qubole.com/resources/hive-spark-alex-sadovsky-oracle-data-cloud/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.qubole.com/resources/ad-hoc-analysis/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.qubole.com/resources/hive-function-cheat-sheet/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.qubole.com/blog/hive-best-practices/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.qubole.com/resources/big-data-analytics-using-window-functions/?db-siteopt-rid=o4HDZ1MMQUWIX0iRgNEI8g
+https://www.linkedin.com/pulse/hive-partitioning-bucketing-examples-gaurav-singh/
+http://henning.kropponline.de/2016/10/09/hive-join-strategies/
+
+-----------------------------------------------
