@@ -46,6 +46,16 @@ deloitte interview questions:
 > Select A.id,B.id from A A INNER JOIN B B ON A.id=B.id where A.salary>100000;
 15: Quick link to learn hadoop basics: http://ercoppa.github.io/HadoopInternals/HadoopArchitectureOverview.html
 
+1: How to develop UDFs in Hive
+2: How to delete duplicate records in hive.
+3: What is diff b/w group by and Reduce by keys.
+4: What is the role of combiner.
+5: Map reduce programs in java.
+6: What are all file formats in hive.
+7: What are all kinds of join in hive.
+8: What is skew join.
+9: What is map side join and reduce side join.
+10: Practice over partition by and clustered by.
 
 
 ------------------------
