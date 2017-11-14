@@ -56,6 +56,7 @@ deloitte interview questions:
 8: What is skew join.
 9: What is map side join and reduce side join.
 10: Practice over partition by and clustered by.
+11: Difference between groupBy and reduceBy keys.
 
 
 ------------------------
