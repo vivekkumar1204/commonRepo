@@ -39,16 +39,33 @@ deloitte interview questions:
 4: What are all Hive Services?
 5: What is YARN? What it does actually?
 6: Who will recieve notification or signals when name node getting down?
+>> ZooKeeper Failover Controler
 7: What is secondary namenode or standby namenode? And how it will work?
+>>Secondary namenode is just a helper for Namenode.
+  It gets the edit logs from the namenode in regular intervals and applies to fsimage.
+  Once it has new fsimage, it copies back to namenode.
+  Namenode will use this fsimage for the next restart, which will reduce the startup time.
+  Secondary Namenode's whole purpose is to have a checkpoint in HDFS. Its just a helper node for namenode. That’s why it also known as checkpoint node.
+  But, It cant replace namenode on namenode's failure.
+  So, Namenode still is Single-Point-of-Failure.
+  To overcome this issue; STANDBY-NAMENODE comes into picture.
+  It does three things:
+  merging fsimage and edits-log files. (Secondary-namenode's work)
+  receive online updates of the file system meta-data, apply them to its memory state and persist them on disks just like the name-node does.
+  Cluster will switch over to the new name-node (this standby-node) if the active namenode dies.
+  
 8: What is the difference between where and having?
 9: What is the actual mechanism of where,having,group by, order by clauses?
 10: What is oozie? What's the role of it in Hadoop ecosystem?
+>>Oozie is a workflow scheduler system to manage Apache Hadoop jobs.
+  Oozie Workflow jobs are Directed Acyclical Graphs (DAGs) of actions.
+
 11: What is pig? how it it different from Hive?
 12: What are all the differences between Map-Reduce and Spark engine processing mechanism?
 13: What are all possible joins in Hive with proper examples?
 14: Which one will work and why explain with reason:
-> Select A.id,B.id from A A INNER JOIN B B ON A.id=B.id and A.salary>100000;
-> Select A.id,B.id from A A INNER JOIN B B ON A.id=B.id where A.salary>100000;
+>> Select A.id,B.id from A A INNER JOIN B B ON A.id=B.id and A.salary>100000;
+>> Select A.id,B.id from A A INNER JOIN B B ON A.id=B.id where A.salary>100000;
 15: Quick link to learn hadoop basics: http://ercoppa.github.io/HadoopInternals/HadoopArchitectureOverview.html
 
 1: How to develop UDFs in Hive
