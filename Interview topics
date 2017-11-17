@@ -24,7 +24,8 @@ Hive:
 2) What is the difference between HBase and Hive ?
 3) Can you list few commonly used Hive services?
 >> Command Line interface(CLI), Hive Web Interface(HWI), HiveServer, HCatalog, Metastore, jar.
-4) Suppose that I want to monitor all the open and aborted transactions in the system along with the transaction id and the transaction state. Can this be achieved using Apache Hive?
+4) Suppose that I want to monitor all the open and aborted transactions in the system along with the transaction id and the transaction 
+state. Can this be achieved using Apache Hive?
 >> Yes we can monitor the hive jobs from hadoop job tracker UI by putting respective URL of the sql_text-stage.
 5) What is the use of Hcatalog?
 >> It is a table and storage management tool to enable users with different data processing tools - Pig, MapReduce - to more easily 
