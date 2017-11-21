@@ -1,0 +1,53 @@
+hands on over two data sets:
+dataset1: id,first_name,last_name,email,gender,ip_address
+
+dataset2: id,first_name,last_name
+
+Create the tables for both datasets:
+
+*************************************
+--Properties to print database name and header of the table
+set hive.cli.print=true;
+set hive.cli.header.print=true;
+
+--Properties to perform the map-side join
+set hive.auto.convert.join=true;
+set hive.mapjoin.smalltable.filesize=25000000; --It is default setting
+hive> set hive.auto.convert.join=true;
+hive> set hive.auto.convert.join.noconditionaltask=true;
+hive> set hive.auto.convert.join.noconditionaltask.size=20971520
+hive> set hive.auto.convert.join.use.nonstaged=true;
+
+--Properties to perform bucket_map_join(If bucketed tables are joined with bucketed columns and have much unequality in the number of buckets)
+set hive.optimize.bucketmapjoin=true;
+
+--Properties to perform skewed join
+set hive.optimize.skewjoin = true;
+set hive.skewjoin.key=500000;
+set hive.skewjoin.mapjoin.map.tasks=10000;
+set hive.skewjoin.mapjoin.min.split=33554432;
+
+set hivevar:db=vivekyadav;
+use ${hivevar:db};
+
+--Creation of dataset1 table
+DROP TABLE IF EXISTS dataset1;
+create table if not exists dataset1 (id int, first_name string, last_name string, email string, gender string, ip_address string) row format delimited fields terminated by ',' tblproperties("skip.header.line.count"="1");
+
+--dataset2
+DROP TABLE IF EXISTS dataset2;
+CREATE TABLE IF NOT EXISTS dataset2 (id int, first_name string, last_name string) row format delimited fields terminated by ',' tblproperties("skip.header.line.count"="1");
+
+--Loading data from file to table
+load data local inpath '/home/vivekyadav/map_side_join_dataset/dataset1.csv' into table dataset1;
+load data local inpath '/home/vivekyadav/map_side_join_dataset/dataset2.csv' into table dataset2;
+
+--Performing map_side join
+select /*+ MAPJOIN(dataset2)*/ d1.id,d1.first_name,d2.id from dataset1 d1 join dataset2 d2 on d1.first_name=d2.first_name limit 10; --Time taken: 19.21 secs
+
+--Time taken without map_side join
+select d1.id,d1.first_name,d2.id from dataset1 d1 join dataset2 d2 on d1.first_name=d2.first_name limit 10; --Time taken: 20.21 secs
+
+--Performing bucket_map_join
+
+*************************************
