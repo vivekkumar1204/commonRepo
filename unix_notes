@@ -60,5 +60,5 @@
 > cat find . -name '*' -type f 1>~find.log 2>find.err --> Here 1> is for std out and 2> for std error
 
 16: date formats
-> date '+%Y%m%s%H%M%S' -->20171212200150
+> date '+%Y%m%s%H%M%S' --> 20171212200150
 
