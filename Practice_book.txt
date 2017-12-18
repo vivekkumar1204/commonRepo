@@ -1,0 +1,141 @@
+Schedule for learning materialL
+********************************************************Spark with Scala(2:00 hrs)************************************************************
+Itversity playlist(Spark with scala) 
+https://www.youtube.com/watch?v=DYk2OirWFIg 
+https://www.youtube.com/watch?v=uvch8SiA-yM
+https://www.youtube.com/watch?v=MnNIJz5JwFQ
+https://www.youtube.com/watch?v=Ulbp7xXr9YY&t=5s 
+https://www.youtube.com/watch?v=oZwjtHJh4sc 
+https://www.youtube.com/watch?v=IDvZ4PPStKE&t=6s 
+https://www.youtube.com/watch?v=2BzILaIFRac&t=6s 
+https://www.youtube.com/watch?v=5b0Rkh40MD0&t=5s 
+https://www.youtube.com/watch?v=59SimTEAkfk&t=3s 
+https://www.youtube.com/watch?v=M1z1VpIjNmw&t=4s 
+https://www.youtube.com/watch?v=IVZuj0DfpH4&t=2031s
+https://www.youtube.com/watch?v=PHZ-E7osETU&t=14s
+https://www.youtube.com/watch?v=TybzCWLXojw&t=62s -->20 mnt
+
+-----------------------------------------------Spark with Python(New playlist of bigdata certification)--------------------
+https://www.youtube.com/watch?v=PvbT-l0mweY
+https://www.youtube.com/watch?v=uW-ErmdLprY&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=2 --> after this jumping to spark directly
+https://www.youtube.com/watch?v=u5JLeweJgj8&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=3 --> Need to continue from here as per initial requirements
+
+--direct to spark video
+https://www.youtube.com/watch?v=TIcZCVvWVjs&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=13 -->42 mnt
+
+--------------------------------------------------------------------------------------------------------
+Spark summit lecture by farooq:
+https://www.youtube.com/watch?v=7ooZ4S7Ay6Y --> Farroq video training on spark --> Start from 4:30 hrs
+
+*********************************************************Hadoop Map Reduce Programming**********************************************************
+https://www.youtube.com/watch?v=WXXZwQex11Q&list=PLf0swTFhTI8p7ZYBB5DmRHK3L6aq8Mvcv&index=3 -->14:45 mnt
+
+*********************************************************Hadoop operations book(30:00 mnts)*****************************************************
+>To learn hadoop fundamentals --> Going on in chapter 2 : Name node and secondary name node operations
+https://www.youtube.com/watch?v=1auRZW7YtHU&index=5&list=PLf0swTFhTI8p7ZYBB5DmRHK3L6aq8Mvcv --> 00
+
+*********************************************************Java Practice(30:00 mnts)**************************************************************
+Java Collection video playlist:
+https://www.youtube.com/watch?v=Bqv4At5vHVQ&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=1 
+https://www.youtube.com/watch?v=n8RRsB2dP7k&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=2
+https://www.youtube.com/watch?v=foi7_Zjbz5c&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=3
+https://www.youtube.com/watch?v=LFri78r3zUQ&index=4&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22 -->00
+
+*********************************************************Python Practice(30:00 mnts)*************************************************************
+Coursera python slides:
+Started re-visited the slides now in 3rd slide to complete
+
+*********************************************************Scala learning(30:00 mnts)**************************************************************
+Scala Programming from JavaTpoint:
+Need to start
+OR
+https://www.coursera.org/specializations/scala -->Coursera scala+spark guide
+
+*********************************************************Core part learning(01:00 hr)***********************************************************
+DS,Algo and Programming:
+1: DS&Algo with Java book
+2: Unix scripting - http://linuxcommand.org/lc3_wss0060.php --continue from start
+
+--------------------------------------------------------------------------------------------------------------------------------------
+*********************************************New set*******************************************
+1: Up to date with MapReduce, HDFS, Hive, Sqoop, Unix concepts
+2: DS and Algo using Python
+3: Apache spark with python
+4: Course python slide slides --> List till 14 page
+*********************************************************Interview related points*****************************************************
+1: Sqoop
+2: Hive services 
+3: Unix scripts & commands
+4: YARN
+5: Collection
+6: SQL joins and analytical functions
+7: Resume 
+
+Hadoop ecosystem
+Hadoop architecture
+Hive architecture
+indesxing in hiv
+SQL-Analytical functions and joins concepts
+
+To delete the partition from Hive table:
+alter table <table_name> drop if exists partition(year=2015);
+
+Difference b/w union and union all:
+1: Both will combine data from two tables
+2: union will produce distinct records but union all will give all records from both the tables including duplicate records
+3: While combining with union, performs duplicate removal, but union all simply concate both the tables records.
+
+What is the difference between where and having?
+1: Where clause is used for filtering the rows and it applies over each and every record, while having clause is used to filter group records
+2: Syntax level difference : Where will use before group by and having will use after group by.
+3: Where clause can be used with select, delete,update, while having  can be used with select only.
+4: When WHERE and HAVING clause are used together in a SELECT query with aggregate function,  WHERE clause is applied first on individual rows and only rows which pass the condition is included for creating groups. Once group is created, HAVING clause is used to filter groups based upon condition specified.
+
+
+Advantage and disadvantages about Views in hive:
+ADVANTAGES OF VIEWS.
+
+1. Hide complex queries
+2. Provides a layer of security. User can create read only view on read only data for specific group of users.
+3. Limits data access to specific users.
+4. Enables computed columns.
+5. In case central database is used by many applications and we need to remove some tables to satisfy business requirements. We can create vies with same schema as legacy tables that we are going to delete so that applictions donot get affected.
+
+DISADVANTAGES OF VIEWS.
+1. Poor Performance while quering from views specially if view is created on other view.
+2. Table dependency. 
+
+Who will recieve notification or signals when name node getting down?
+The ZKFailoverController (ZKFC) is a new component which is a ZooKeeper client which also monitors and manages the state of the NameNode. Each of the machines which runs a NameNode also runs a ZKFC.
+
+Ques: What is Ambari?
+Ans: Amabri is a hadoop management dashboard, that keeps track of cluster health and dignose performence issues. It was created to support the hadoop ecosystem tools including Hive,Pig,Sqoop, Zookeeper etc.
+
+Ques: What is Hue?
+Ans : Hue is a set of web applications that enable you to interact with a CDH(Cloudera Distribution) cluster. Hue applications let you browse HDFS and work with Hive and Cloudera Impala queries, MapReduce jobs, and Oozie workflows.The goal of Hue’s Editor is to be make data querying easy and productive. It is available in Editor or Notebook mode.
+Simply you can say most of the work we are doing directly from unix terminal can do from Hue, it is a graphical user interface to work on Hive,pig,MySql,Map-Reduce etc. This is developed by cloudera for their cloudera distribution(CDH) like in AMEX using MapR's distribution(MapR) as inbuild hadoop ecosystem(all hadoop supporting tools like Hive,Pig,MySql,Sqoop,Spark etc). But MapR distribution do not have a proper graphical user interface yet.
+
+Ques: What is an index?
+Ans: Index is a reference to the records. Instead of searching all the records, we can refer to the index to search for a particular record. Basically it's make easy data search.
+
+Ques: Why to use indexing in Hive?
+Ans: The major advantage of using indexing is; whenever we perform a query on a table that has an index, there is no need for the query to scan all the rows in the table. Further, it checks the index first and then goes to the particular column(index created based on the column) and performs the operation
+
+Types of Indexes in Hive:
+Compact Indexing
+Bitmap Indexing
+
+Differences between Compact and Bitmap Indexing:
+The main difference is the storing of the mapped values of the rows in the different blocks. When the data inside a Hive table is stored by default in the HDFS, they are distributed across the nodes in a cluster. There needs to be a proper identification of the data, like the data in block indexing. This data will be able to identity which row is present in which block, so that when a query is triggered it can go directly into that block. So, while performing a query, it will first check the index and then go directly into that block.
+
+==>Compact indexing stores the pair of indexed column’s value and its blockid.
+==>Bitmap indexing stores the combination of indexed column value and list of rows as a bitmap.
+
+Ques: What is Flume?
+Ans: A service for streaming logs into Hadoop. Apache Flume is a distributed, reliable, and available service for efficiently collecting, aggregating, and moving large amounts of streaming data into the Hadoop Distributed File System (HDFS).
+
+Ques: What is Oozie?
+Ans: Oozie is a workflow scheduler system to manage Apache Hadoop jobs. Oozie Workflow jobs are Directed Acyclical Graphs (DAGs) of actions. Oozie Coordinator jobs are recurrent Oozie Workflow jobs triggered by time (frequency) and data availability. ... Oozie is a scalable, reliable and extensible system.
+
+Ques: What is Zookeeper?
+Ans: ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of services are used in some form or another by distributed applications.
