@@ -21,7 +21,8 @@ https://www.youtube.com/watch?v=uW-ErmdLprY&list=PLf0swTFhTI8otgadSFlL44X_ISa0jv
 https://www.youtube.com/watch?v=u5JLeweJgj8&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=3 --> Need to continue from here as per initial requirements
 
 --direct to spark video
-https://www.youtube.com/watch?v=TIcZCVvWVjs&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=13 -->42 mnt
+https://www.youtube.com/watch?v=TIcZCVvWVjs&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=13
+https://www.youtube.com/watch?v=xVD2LutYf0Q&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=14 --> Start
 
 --------------------------------------------------------------------------------------------------------
 Spark summit lecture by farooq:

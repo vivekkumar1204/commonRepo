@@ -1,0 +1,6 @@
+1: Basic HDFS commands:
+> hadoop fs -ls
+> hadoop fs -put
+> hadoop fs -get
+> hadoop fs mkdir
+
