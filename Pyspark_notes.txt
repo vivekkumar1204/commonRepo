@@ -15,3 +15,15 @@
 3: Copy dataset from remote machine to local
 scp vivekyadav@gw01.itversity.com:/home/vivekyadav/data/lca C:\Users\vivek\Desktop\Python_workbench\itversity_data\input
 
+4: Reading data from file in form of RDDs : Need to use SparkContext object (i.e sc)
+from pyspark import SparkContext, SparkConf
+conf = SparkConf.setAppName("testing").setMaster("local")
+sc = SparkContext(conf=conf)
+orders = sc.textFile("<Fully qualified path till file>")
+print (type(orders)) # It will print the type of data set orders
+print orders
+#If we have file in hdfs then directly we can call using sc.textFile() method
+#If we have file in local machine we need to take it in data structures like list and then create the RDDs ahead
+ordersLocal = open("/data/retail_db/orders/part-00000").read().splitlines()
+
+5: writing the data into files : Need to use SparkContext object (i.e sc)
