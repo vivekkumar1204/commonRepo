@@ -12,3 +12,6 @@
 2: To start pyspark shell
 > pyspark --master yarn --conf spark.ui.port=37465 --num-executors=20
 
+3: Copy dataset from remote machine to local
+scp vivekyadav@gw01.itversity.com:/home/vivekyadav/data/lca C:\Users\vivek\Desktop\Python_workbench\itversity_data\input
+

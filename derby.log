@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Mon Dec 25 09:35:52 IST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0160-8bd9-21ee-00003266ca08 
+on database directory C:\Users\vivek\AppData\Local\Temp\spark-06d403c0-6770-464f-92ae-875e14ead044\metastore with class loader sun.misc.Launcher$AppClassLoader@5c647e05 
+Loaded from file:/C:/Spark/spark-1.6.3-bin-hadoop2.6/lib/spark-assembly-1.6.3-hadoop2.6.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_05-b13
+user.dir=C:\Users\vivek\Desktop\GitHub\vivekRepo
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
