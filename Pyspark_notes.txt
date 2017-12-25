@@ -24,6 +24,9 @@ print (type(orders)) # It will print the type of data set orders
 print orders
 #If we have file in hdfs then directly we can call using sc.textFile() method
 #If we have file in local machine we need to take it in data structures like list and then create the RDDs ahead
-ordersLocal = open("/data/retail_db/orders/part-00000").read().splitlines()
+ordersLocal = open("/data/retail_db/orders/part-00000").read().splitlines() # python metgods to read file
+ordersRDD = sc.parallelize(ordersLocal) #created RDD from the list --> convert from linear ds to distributed ds and collect() used to convert rdd to list
+ordersRDD.count()
+print ordersRDD
 
 5: writing the data into files : Need to use SparkContext object (i.e sc)
