@@ -1,6 +1,14 @@
 1: Basic HDFS commands:
+> hadoop fs --> It will show all the available commmands in hdfs
 > hadoop fs -ls
 > hadoop fs -put
 > hadoop fs -get
-> hadoop fs mkdir
+> hadoop fs -mkdir
+> hadoop fs -put <local system location> <hdfs location> or hadoop fs -CopyFromLocal
+> hadoop fs -get <hdfs location> <local system location> or hadoop fs -CopyToLocal
+> hdfs fsck '<file location>' -files -blocks -locations
+> pf -fu hdfs(user) --> It will return process related to hdfs users
+
+2: To start pyspark shell
+> pyspark --master yarn --conf spark.ui.port=37465 --num-executors=20
 
