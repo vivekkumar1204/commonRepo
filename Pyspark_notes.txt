@@ -29,4 +29,20 @@ ordersRDD = sc.parallelize(ordersLocal) #created RDD from the list --> convert f
 ordersRDD.count()
 print ordersRDD
 
+5: Exercise for generatiing revenue from the order_items:
+orderItems = sc.textFile("/public/retail_db/order_items")
+for i in orderItems.take(10): print(i)
+
+orderItemsFilter = orderItems.filter(lambda oi: int(oi.split(",")[1])==2)
+orderItemsMap = orderItemsFilter.map(lambda oi: float(oi.split(",")[4]))
+orderRevenue = orderItemsMap.reduce(lambda t, v: t+v)
+print(orderRevenue)
+
+6: Word count program and use of map and flatMap with lambda function:
+lines = sc.textFile("file path name")
+word_flatMap=lines.flatMap(lambda line:line.split(" "))
+word_map=word_flatMap.map(lambda word:(word,1))
+word_counts = word_map.reduceByKey(lambda t,v:t+v)
+for i in word_counts.collect():print(i)
+
 5: writing the data into files : Need to use SparkContext object (i.e sc)
