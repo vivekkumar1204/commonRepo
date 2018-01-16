@@ -24,7 +24,8 @@ https://www.youtube.com/watch?v=u5JLeweJgj8&list=PLf0swTFhTI8otgadSFlL44X_ISa0jv
 https://www.youtube.com/watch?v=TIcZCVvWVjs&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=13
 https://www.youtube.com/watch?v=xVD2LutYf0Q&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=14
 https://www.youtube.com/watch?v=iHWD-eq5L1w&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=15 
-https://www.youtube.com/watch?v=A4Pp0wAGdEU&index=17&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ -->1:19
+https://www.youtube.com/watch?v=A4Pp0wAGdEU&index=17&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
+https://www.youtube.com/watch?v=ZqeCR-aP9QU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=18 -- 1.36.21 min to exercise aggregateByKey
 
 --------------------------------------------------------------------------------------------------------
 Spark summit lecture by farooq:
@@ -64,7 +65,8 @@ DS,Algo and Programming:
 1: Up to date with MapReduce, HDFS, Hive, Sqoop, Unix concepts
 2: DS and Algo using Python
 3: Apache spark with python
-4: Course python slide slides --> Dictionary from 18 page
+4: Course python slide slides --> String from 23 page
+http://localhost:8888/notebooks/Desktop/Python_workbench/Python_revisit_dec_2017/practice_book.ipynb
 *********************************************************Interview related points*****************************************************
 1: Sqoop
 2: Hive services 

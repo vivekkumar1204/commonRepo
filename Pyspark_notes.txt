@@ -45,4 +45,29 @@ word_map=word_flatMap.map(lambda word:(word,1))
 word_counts = word_map.reduceByKey(lambda t,v:t+v)
 for i in word_counts.collect():print(i)
 
+7: Use orderItems file to do below task:
+#Revenue for each order_id
+In sql:
+select order_item_order_id,sum(order_item_subtotal) from order_items group by order_item_order_id limit 20;
+
+In pyspark:
+orderItems = sc.textFile("/public/retail_db/order_items")
+for i in orderItems.take(10):print(i)
+
+orderItemsMap = orderItems.map(lambda x:(int(x.split(",")[1]),float(x.split(",")[4])))
+revenuePerItem = orderItemsMap.reduceBykey(lambda t,v:t+v)
+
+#Get order items generating maximum quantity per order id
+orderIdDetails = orderItems.map(lambda x:(int(x.split(",")[1]),x))
+orderItemWithMaxQuantityPerItem = orderIdDetails.reduceByKey(lambda max, ele:max if int(max.split(",")[3]) > int(ele.split(",")[3]) else ele)
+for i in orderItemWithMaxQuantityPerItem.take(10):print(i)
+
+8: Calculate revenue and count of order irems as per order:
+
+9: Use of reduceByKey:
+orderItems = sc.textFile("/public/retail_db/order_items")
+orderItemsMap = orderItems.map(lambda oi:(int(oi.split(",")[1]),(float(oi.split(",")[4]),1)))
+revenuePerOrder = orderItemsMap.reduceByKey(lambda total,value:(total[0]+value[0],total[1]+value[1]))
+for i in revenuePerOrder.take(10):print(i)
+
 5: writing the data into files : Need to use SparkContext object (i.e sc)

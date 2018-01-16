@@ -8,16 +8,16 @@
 >Password:(Enter password)
 
 #List-database command to check the database
-sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity
+sqoop list-databases --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity
 
 #To save the data and log of command
-sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 1> list-database.data
-sqoop list-database --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 2> list-database.log
+sqoop list-databases --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 1> list-database.data
+sqoop list-databases --connect "jdbc:mysql://nn01.itversity.com:3306" --username retail_dba --password itversity 2> list-database.log
 
 #To CRUD operation on RDBMS with sqoop
 sqoop eval --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --query "select * from products limit 10"
 
-#import command to load RDBMS tbale to HDFS
+#import command to load RDBMS table to HDFS
 sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir "/user/vivekyadav/retail_db" 
 
 #Import the table data based on the tablename itself inside the directory
