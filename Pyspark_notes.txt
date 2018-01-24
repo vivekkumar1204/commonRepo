@@ -61,13 +61,24 @@ revenuePerItem = orderItemsMap.reduceBykey(lambda t,v:t+v)
 orderIdDetails = orderItems.map(lambda x:(int(x.split(",")[1]),x))
 orderItemWithMaxQuantityPerItem = orderIdDetails.reduceByKey(lambda max, ele:max if int(max.split(",")[3]) > int(ele.split(",")[3]) else ele)
 for i in orderItemWithMaxQuantityPerItem.take(10):print(i)
-
-8: Calculate revenue and count of order irems as per order:
-
-9: Use of reduceByKey:
+ 
+#Calculate revenue and count of order irems as per order using reduceByKey:
+8: Use of reduceByKey:
 orderItems = sc.textFile("/public/retail_db/order_items")
 orderItemsMap = orderItems.map(lambda oi:(int(oi.split(",")[1]),(float(oi.split(",")[4]),1)))
 revenuePerOrder = orderItemsMap.reduceByKey(lambda total,value:(total[0]+value[0],total[1]+value[1]))
 for i in revenuePerOrder.take(10):print(i)
+
+#Calculate revenue and count of order irems as per order using aggregateByKey:
+9: Use of aggregateByKey:
+orderItems = sc.textFile("/public/retail_db/order_items")
+orderItemsMap = orderItems.map(lambda oi:(int(oi.split(",")[1]),(float(oi.split(",")[4]),1)))
+revenuePerOrder = orderItemsMap.aggregateByKey((0.0,0), lambda inter,revenue:(inter[0]+revenue,inter[1]+1), lambda final,inter: (final[0]+inter[0],final[1]+inter[1 ]))
+revenuePerOrder.saveAsTextFile("/user/vivekyadav/revenuePerOrderAndCount")
+for i in revenuePerOrder.take(10).print(i)
+
+
+
+
 
 5: writing the data into files : Need to use SparkContext object (i.e sc)

@@ -25,7 +25,9 @@ https://www.youtube.com/watch?v=TIcZCVvWVjs&list=PLf0swTFhTI8otgadSFlL44X_ISa0jv
 https://www.youtube.com/watch?v=xVD2LutYf0Q&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=14
 https://www.youtube.com/watch?v=iHWD-eq5L1w&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=15 
 https://www.youtube.com/watch?v=A4Pp0wAGdEU&index=17&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
-https://www.youtube.com/watch?v=ZqeCR-aP9QU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=18 -- 1.36.21 min to exercise aggregateByKey
+https://www.youtube.com/watch?v=ZqeCR-aP9QU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=18 
+https://www.youtube.com/watch?v=UR1yFoqDILE&index=19&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
+https://www.youtube.com/watch?v=8BDa4Ddum6I&index=21&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ -->55 mnt
 
 --------------------------------------------------------------------------------------------------------
 Spark summit lecture by farooq:
@@ -39,11 +41,26 @@ https://www.youtube.com/watch?v=WXXZwQex11Q&list=PLf0swTFhTI8p7ZYBB5DmRHK3L6aq8M
 https://www.youtube.com/watch?v=1auRZW7YtHU&index=5&list=PLf0swTFhTI8p7ZYBB5DmRHK3L6aq8Mvcv --> 00
 
 *********************************************************Java Practice(30:00 mnts)**************************************************************
+Core Java full play list: https://www.youtube.com/watch?v=eTXd89t8ngI&list=PLcj5PWxT3sFQqY7BheqtR9fUsPUv4I8sB
+1: OOPs concepts --> https://www.youtube.com/watch?v=Mp4Fy9TDU_Y&list=PLBKgXPzyseMzVJxZT9NnpfnesKThrqslL
+2: String --> https://www.youtube.com/watch?v=-qrKA1aWMZs&list=PLd3UqWTnYXOlEa6-58nC6bnpx43VZiTnN
+4: I/O operations --> https://www.youtube.com/watch?v=v4HS1Zhdh98&list=PLd3UqWTnYXOnCS4GEeEE-m47vN3Ha2b-K
+5: Multithreading --> https://www.youtube.com/watch?v=Hysb7hXp8B0&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4
+6: Access modifiers --> https://www.youtube.com/watch?v=O3kDqVEbfMk&list=PLd3UqWTnYXOnMH-BdI3A39-8v7m9xMP2z
+7: Collection --> https://www.youtube.com/watch?v=Bqv4At5vHVQ&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=1 
+8: Serialization --> https://www.youtube.com/watch?v=bIzfrvdt7qM&list=PLd3UqWTnYXOl0LRB42B9uTIT3NEDhjhF2
+
+Multithreading plalist:
+https://www.youtube.com/watch?v=Hysb7hXp8B0&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4
+
 Java Collection video playlist:
 https://www.youtube.com/watch?v=Bqv4At5vHVQ&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=1 
 https://www.youtube.com/watch?v=n8RRsB2dP7k&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=2
 https://www.youtube.com/watch?v=foi7_Zjbz5c&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=3
-https://www.youtube.com/watch?v=LFri78r3zUQ&index=4&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22 -->00
+https://www.youtube.com/watch?v=LFri78r3zUQ&index=4&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
+https://www.youtube.com/watch?v=VmZrSCMkYoY&index=5&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
+https://www.youtube.com/watch?v=AooYaSeVuZo&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=7 -->
+https://www.youtube.com/watch?v=sLW7GufoSXM&index=8&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22 -->01
 
 *********************************************************Python Practice(30:00 mnts)*************************************************************
 Coursera python slides:

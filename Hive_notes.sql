@@ -205,3 +205,10 @@ set mapred.output.compression.codec=org.apache.hadoop.io.compress.GzipCodec;
 >In partitioning parts stores like directories.
 >Inside directory, data file will be exist and we can apply bucketing again inside the partitioned data file.
 
+#Type of UDFs --> 1: General User Defined Function, 2: UDAF(User Defined Aggregate Function), 3: UDTF(User Defined Tabular Function)
+Step 1: Create java class along with required logic
+Step 2: create jar file of java code
+Step 3: Add jar file in .bashrc file or in hive terminal using below command-
+add jar <Fully qualified path of jar file>
+Step 4: create temporary function using below syntax-
+create temporary function <function_name> as 'absolute class path i.e package_name.classname';
