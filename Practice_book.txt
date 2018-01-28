@@ -27,7 +27,10 @@ https://www.youtube.com/watch?v=iHWD-eq5L1w&list=PLf0swTFhTI8otgadSFlL44X_ISa0jv
 https://www.youtube.com/watch?v=A4Pp0wAGdEU&index=17&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
 https://www.youtube.com/watch?v=ZqeCR-aP9QU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=18 
 https://www.youtube.com/watch?v=UR1yFoqDILE&index=19&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
-https://www.youtube.com/watch?v=8BDa4Ddum6I&index=21&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ -->55 mnt
+https://www.youtube.com/watch?v=8BDa4Ddum6I&index=21&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ 
+https://www.youtube.com/watch?v=tppVHo052nU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=22
+https://www.youtube.com/watch?v=QbkrhVSuaVk&index=23&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
+https://www.youtube.com/watch?v=fpEayp7yFzM&index=24&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ --33
 
 --------------------------------------------------------------------------------------------------------
 Spark summit lecture by farooq:
@@ -59,8 +62,9 @@ https://www.youtube.com/watch?v=n8RRsB2dP7k&list=PLd3UqWTnYXOklywocjGz7Z02rqbLeg
 https://www.youtube.com/watch?v=foi7_Zjbz5c&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=3
 https://www.youtube.com/watch?v=LFri78r3zUQ&index=4&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
 https://www.youtube.com/watch?v=VmZrSCMkYoY&index=5&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
-https://www.youtube.com/watch?v=AooYaSeVuZo&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=7 -->
-https://www.youtube.com/watch?v=sLW7GufoSXM&index=8&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22 -->01
+https://www.youtube.com/watch?v=AooYaSeVuZo&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=7
+https://www.youtube.com/watch?v=sLW7GufoSXM&index=8&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
+https://www.youtube.com/watch?v=uu9DHLJVRIs&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=9 --00
 
 *********************************************************Python Practice(30:00 mnts)*************************************************************
 Coursera python slides:
@@ -161,3 +165,13 @@ Ans: Oozie is a workflow scheduler system to manage Apache Hadoop jobs. Oozie Wo
 
 Ques: What is Zookeeper?
 Ans: ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of services are used in some form or another by distributed applications.
+
+
+Game Plan:
+1: Spark with python playlist: Continue as usual speed with practice
+2: Spark fundamental --> book and other internet resources -- chapter 4
+3: Java playlist with usual speed
+4: Core java fundamental from techmentro notes for next week interview along with topic wise practice
+5: Hadoop fundamental --> Book and other resources
+6: Hive UDFs and map reduce program practice --> practice from external resources
+7: Python practice for collection 
