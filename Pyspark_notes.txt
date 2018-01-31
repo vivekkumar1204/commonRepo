@@ -123,4 +123,23 @@ spark-submit \
     yarn-client argv1 argv2 argv3
 
 
-5: writing the data into files : Need to use SparkContext object (i.e sc)
+10: To convert a RDD into collection --> by using collect()
+products = sc.textFile("public/retails_db/products")
+productFiltered = products.filter(lambda p:p.split(",")[4]!="")
+productsList = productFiltered.collect()
+productsList[:10]
+
+11: Use of groupByKey
+ productsByCategory = pythonFiltered.map(lambda p: (int(p.split(",")[1]),p)).groupByKey()
+ 
+12: Use of flatMap to parse the grouped collection
+#create a function to get top records
+def getTopNProducts(productsList,topN):
+    sortedProducts = sorted(productsList, key= lambda k: float(k.split(",")[4]), reverse=True)
+    return sortedProducts[:topN]
+    
+products = sc.textFile("/public/retail_db/products")
+productsFiltered = products.filter(lambda p: p.split(",")[4]!="") 
+
+productsByCategory =  productsFiltered.map(lambda p:(int(p.split(",")[1]),p)).groupByKey()  
+topNProductsbyCategory = productsByCategory.flatMap(lambda p: getTopNProducts(list(p[1]),3))

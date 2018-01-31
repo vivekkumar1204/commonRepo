@@ -30,7 +30,8 @@ https://www.youtube.com/watch?v=UR1yFoqDILE&index=19&list=PLf0swTFhTI8otgadSFlL4
 https://www.youtube.com/watch?v=8BDa4Ddum6I&index=21&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ 
 https://www.youtube.com/watch?v=tppVHo052nU&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ&index=22
 https://www.youtube.com/watch?v=QbkrhVSuaVk&index=23&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
-https://www.youtube.com/watch?v=fpEayp7yFzM&index=24&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ --33
+https://www.youtube.com/watch?v=fpEayp7yFzM&index=24&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ
+https://www.youtube.com/watch?v=mct4NaTiouU&index=25&list=PLf0swTFhTI8otgadSFlL44X_ISa0jvhJQ -- 00
 
 --------------------------------------------------------------------------------------------------------
 Spark summit lecture by farooq:
@@ -64,7 +65,8 @@ https://www.youtube.com/watch?v=LFri78r3zUQ&index=4&list=PLd3UqWTnYXOklywocjGz7Z
 https://www.youtube.com/watch?v=VmZrSCMkYoY&index=5&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
 https://www.youtube.com/watch?v=AooYaSeVuZo&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=7
 https://www.youtube.com/watch?v=sLW7GufoSXM&index=8&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
-https://www.youtube.com/watch?v=uu9DHLJVRIs&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=9 --00
+https://www.youtube.com/watch?v=uu9DHLJVRIs&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=9
+https://www.youtube.com/watch?v=zHKqmFyuaKI&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=10 --00
 
 *********************************************************Python Practice(30:00 mnts)*************************************************************
 Coursera python slides:
