@@ -49,7 +49,10 @@ Core Java full play list: https://www.youtube.com/watch?v=eTXd89t8ngI&list=PLcj5
 1: OOPs concepts --> https://www.youtube.com/watch?v=Mp4Fy9TDU_Y&list=PLBKgXPzyseMzVJxZT9NnpfnesKThrqslL
 2: String --> https://www.youtube.com/watch?v=-qrKA1aWMZs&list=PLd3UqWTnYXOlEa6-58nC6bnpx43VZiTnN
 4: I/O operations --> https://www.youtube.com/watch?v=v4HS1Zhdh98&list=PLd3UqWTnYXOnCS4GEeEE-m47vN3Ha2b-K
+
 5: Multithreading --> https://www.youtube.com/watch?v=Hysb7hXp8B0&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4
+https://www.youtube.com/watch?v=fd3TAYCHRfw&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4&index=2--00
+
 6: Access modifiers --> https://www.youtube.com/watch?v=O3kDqVEbfMk&list=PLd3UqWTnYXOnMH-BdI3A39-8v7m9xMP2z
 7: Collection --> https://www.youtube.com/watch?v=Bqv4At5vHVQ&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=1 
 8: Serialization --> https://www.youtube.com/watch?v=bIzfrvdt7qM&list=PLd3UqWTnYXOl0LRB42B9uTIT3NEDhjhF2
@@ -66,7 +69,9 @@ https://www.youtube.com/watch?v=VmZrSCMkYoY&index=5&list=PLd3UqWTnYXOklywocjGz7Z
 https://www.youtube.com/watch?v=AooYaSeVuZo&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=7
 https://www.youtube.com/watch?v=sLW7GufoSXM&index=8&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22
 https://www.youtube.com/watch?v=uu9DHLJVRIs&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=9
-https://www.youtube.com/watch?v=zHKqmFyuaKI&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=10 --00
+https://www.youtube.com/watch?v=zHKqmFyuaKI&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=10
+https://www.youtube.com/watch?v=AVdD987trsc&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=12
+https://www.youtube.com/watch?v=JOoq94-UQ-A&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=15 --00
 
 *********************************************************Python Practice(30:00 mnts)*************************************************************
 Coursera python slides:
@@ -177,3 +182,16 @@ Game Plan:
 5: Hadoop fundamental --> Book and other resources
 6: Hive UDFs and map reduce program practice --> practice from external resources
 7: Python practice for collection 
+
+Target is 10 may: To get set for any interview without fear to get atleast 8 LPA(first target)--> Next 12 LPA(second target)-->(18 LPA)(third target)-->(25 LPA till the end of 2019)
+Programming: 60 days(120 hrs: 2 hrs daily)
+1: Java
+2: Scala
+3: Unix
+4: Data structures & algorithms using java
+
+Frameworks: 60 days(120 hrs: 2 hrs daily)
+1: Hadoop echosystem
+2: Spark echosystem
+
+Complementory session: 30 mnts on weekends(boost up delivering the content and marketing the skill set)

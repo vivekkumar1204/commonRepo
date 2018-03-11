@@ -39,7 +39,7 @@ step:3- select word,count(1) as count from (select explode(split(sentence,' ')) 
   fields terminated by ','
   location '/user/vivekyadav/nyse';
   
-#We can create manged and external tables on specified location although location is mandatory for external table but not for managed table.
+#We can create manged and external tables on specified location. 
 #The main difference b/w both is the coupling between metastore and HDFS:
 1- If we drop external table then only table schema will be removed from the metastore and no impact on associated dataset.
 2- If we drop managed table then schema from metastore along with associated dataset will be removed.
@@ -210,5 +210,42 @@ Step 1: Create java class along with required logic
 Step 2: create jar file of java code
 Step 3: Add jar file in .bashrc file or in hive terminal using below command-
 add jar <Fully qualified path of jar file>
+Ex: add jar /home/vivekyadav/maxMarks_UDF_jar.jar;
 Step 4: create temporary function using below syntax-
+Ex: 
 create temporary function <function_name> as 'absolute class path i.e package_name.classname';
+hive (vivekyadav)> create temporary function custom_max as 'lab.UDFs.Custom_Max';
+
+
+Example: Regular UDF
+create table student(id int,name string,math double,eng double,physics double,social double);
+
+insert into student values(1,'a',12.4,23.3,85.1,44.3);
+insert into student values(2,'b',13.4,93.3,82.1,04.3);
+insert into student values(3,'c',14.4,23.3,80.1,24.3);
+insert into student values(4,'d',10.4,73.3,83.1,74.3);
+insert into student values(5,'e',17.4,43.3,86.1,24.3);
+
+Output:
+1       a       85.1
+2       b       93.3
+3       c       80.1
+4       d       83.1
+5       e       86.1
+
+Real ex: While implementing one senario from business i found out that, business need maximum spend across the spend categories
+cm11   travel       entertain       groceries      transport
+1        5              2              4              9
+2         3             5              10             8
+3        11              2              1              3
+4          6             15              5            7
+
+output:
+1   9
+2   10
+3   11
+4   15
+ 
+
+ Example: User Defined Aggregation Function
+ 
