@@ -1,4 +1,4 @@
-=========================Hive Notes=======================
+=========================Hive Notes=======================*****************
 #Write the Hive query to wordcount taking textfile as input.
 Step:1- Craete table table_name(sentence string);
 Step:2- Load data local inpath 'word.txt' overwrite into table table_name;
@@ -205,10 +205,13 @@ set mapred.output.compression.codec=org.apache.hadoop.io.compress.GzipCodec;
 >In partitioning parts stores like directories.
 >Inside directory, data file will be exist and we can apply bucketing again inside the partitioned data file.
 
+#Refresh the hive metadata after the new partition added, new data files added etc.
+>msck repair table <table_name>;
+
 #Type of UDFs --> 1: General User Defined Function, 2: UDAF(User Defined Aggregate Function), 3: UDTF(User Defined Tabular Function)
 Step 1: Create java class along with required logic
 Step 2: create jar file of java code
-Step 3: Add jar file in .bashrc file or in hive terminal using below command-
+Step 3: Add jar file in .hiverc file or in hive terminal using below command-
 add jar <Fully qualified path of jar file>
 Ex: add jar /home/vivekyadav/maxMarks_UDF_jar.jar;
 Step 4: create temporary function using below syntax-

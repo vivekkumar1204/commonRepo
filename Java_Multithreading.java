@@ -23,3 +23,110 @@ Note:
    To develop video games
    To develop web servers and application servers etc.
 3: When compare with old languages developing multithreaded application in java is very easy , because java provides inbuilt support for mutithreading with rich API(Thread, Runnable, ThreadGroup ...).           
+
+Defining a Thread:
+------------------
+ We can define a thread in the following two ways:
+1: By extending Thread class
+2: By implementing Runnable interface
+
+1: By extending Thread class:
+-----------------------------
+Example:
+class MyThread extends Thread
+{
+    public void run()
+    {
+        for(int i=0;i<=10;i++)
+        {
+            sop("Child thread");
+        }
+    }
+}
+
+Class ThreadDemo
+{
+    psvm(String arr[])
+    {
+        MyThread th=new MyThread();
+        t.start();
+        for(int i=0;i<=10;i++)
+        {
+            sop("main thread");
+        }
+    }
+}
+
+Case-1: Thread Scheduler:
+-------------------------
+ 1: It is the part of JVM.
+ 2: It is responsible to schedule threads i.e if multiple threads are waitng to get the chance of execution then in whitch order threads will be executed is decided by thread scheduler.
+ 3: We can'nt expect exact algorithm followed by scheduler it is varied from JVM to JVM hence we can't expect threads execution order and exact output. Hence whenever situation comes to multithreading there is no guarantee for exact output but we can provide several possible outputs.
+ 
+   The following are the various possible outputs for the above program:
+Possibility-1:
+main thread
+main thread
+main thread
+main thread
+....
+child thread
+child thread
+child thread
+child thread
+.....
+
+Possibility-2:
+child thread
+child thread
+child thread
+child thread
+....
+main thread
+main thread
+main thread
+main thread
+....
+
+Possibility-3:
+main thread
+child thread
+main thread
+child thread
+main thread
+child thread
+main thread
+child thread
+main thread
+child thread
+...
+
+Possibility-3:
+child thread
+main thread
+child thread
+main thread
+child thread
+main thread
+child thread
+main thread
+child thread
+main thread
+...
+
+Case-2: Difference between t.start() and t.run():
+-------------------------------------------------
+      In the case of t.start() a new thread will be created which is the responsible for the execution of run() method.
+   But in the case of t.run() a new thread woun't be created and run() method will be executed just like a normal method call by main thread.
+   Hence in the above program if we replace t.start() with t.run() then the output will be child thread 10 times main thread 10 times. This total output produced by only main thread. 
+   
+Case-3: Importence of Thread class start() method:
+--------------------------------------------------
+It is responsible to register the Thread with thread scheduler and all other mandatory activities, hence without executing Thread class start method there is no chance of starting a new thread in java due to this thread class start() method is considered as heart of multithreading.
+Ex:
+start()
+{
+    1: Register the thread with scheduler.
+    2: Perform all other mandatory activities
+    3: Invole run() method
+}

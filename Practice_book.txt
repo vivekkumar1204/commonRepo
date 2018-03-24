@@ -59,6 +59,7 @@ https://www.youtube.com/watch?v=fd3TAYCHRfw&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2
 
 Multithreading plalist:
 https://www.youtube.com/watch?v=Hysb7hXp8B0&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4
+https://www.youtube.com/watch?v=fd3TAYCHRfw&index=2&list=PLd3UqWTnYXOlHj_fVVjUIVHjD5uEy2kk4 --51.30 mnt
 
 Java Collection video playlist:
 https://www.youtube.com/watch?v=Bqv4At5vHVQ&list=PLd3UqWTnYXOklywocjGz7Z02rqbLegX22&index=1 
