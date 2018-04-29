@@ -105,6 +105,9 @@ http://localhost:8888/notebooks/Desktop/Python_workbench/Python_revisit_dec_2017
 6: SQL joins and analytical functions
 7: Resume 
 
+*********************************************************Books Tracker****************************************************************
+1: Think and Grow Ritch : Napoleon Hill --> 22
+**************************************************************************************************************************************
 Hadoop ecosystem
 Hadoop architecture
 Hive architecture
