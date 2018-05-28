@@ -1,0 +1,23 @@
+HIVE operations:-
+-----------------
+1- Can create table into HDFS
+2- Can fetch records from HDFS via HIVE table by giving location while DDL.
+3-Can load data from local to hive database(HDFS) and fetch records by hive created tables.
+4-Can load partioned data by using attributes partitioned.
+ 
+DDL Query for products table :-
+------------------------------
+create table products (prod_name string,description string, category string,sty_on_hand int,prod_num string,packaged_with array<string>) row format delimited fields terminated by ',' collection items terminated by ':' stored as textfile;
+
+
+DDL Query for sales table :-
+------------------------------
+create table sales_staging (cust_id string,prod_num string,qty int,sale_date string,sales_id string) comment 'staging data for sales table' row format delimited fields terminated by ',' stored as textfile;
+
+DDL Query for customer table :-
+------------------------------
+create table customer (fname string,lname string,status string,telno string,customer_id string,city_zip struct<city:string, zip:string>) comment 'External table for customer data' row format delimited fields terminated by ',' collection items terminated by '|' location '/user/hdfs/hive_data';
+
+Insert query for products:-
+----------------------------
+LOAD DATA LOCAL INPATH '/home/vivek/Desktop/Local_data/sampleData/Computer_Business/WithoutHeaders/Product.csv' overwrite into table products;

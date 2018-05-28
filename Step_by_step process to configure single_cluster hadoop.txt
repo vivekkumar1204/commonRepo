@@ -1,0 +1,174 @@
+Step by step guide for Hadoop Installation:-
+1-Run update command                                     --> sudo apt-get update
+2-Install java                                           -->sudo apt-get install default-jdk
+3-Add a group							                 -->sudo addgroup hdoop_group
+4-Add a specific user to the group for hadoop	         -->sudo adduser --ingroup haddop_group hduser
+5-Now let add new user to sudoer group 				     -->sudo adduser hduser sudo
+6-now let's install openssh server						-->sudo apt-get install openssh-server
+7-Now let's login with hduser and generate a key for 
+  for hduser and add the key to authorized keys         -->ssh-keygen -t rsa -P ""
+8-Copy the key to authorized key                        -->cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+9-Now login by localhost                                -->ssh localhost
+
+Now let's start main Hadoop installation  
+----------------------------------------
+10-Now unzip the hadoop zip file                        -->tar xvzf hadoop-2.7.2.tar.gz
+11- Move the unziped file to /usr/local/hadoop          -->sudo mv hadoop-2.7.2 /usr/local/hadoop
+12-Let give the directory to hduser as owner            -->sudo chown -R hduser /usr/local/hadoop
+                                                        -->sudo mkdir -p /usr/local/hadoop_tmp/hdfs/namenode
+														-->sudo mkdir -p /usr/local/hadoop_tmp/hdfs/datanode
+														-->sudo chown -R hduser /usr/local/hadoop_tmp/
+														
+13-Now edit the .bashrc(hidden file) file               -->sudo gedit .bashrc
+
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+export HADOOP_HOME=/usr/local/hadoop
+export PATH=$PATH:$HADOOP_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/sbin
+export HADOOP_MAPPER_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-D.java.library.path=$HADOOP_HOME/lib"
+
+15-Configuration file : /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+
+14-Configuration file : core-site.xml
+
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+15-Configuration file : hdfs-site.xml
+
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+	<property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/usr/local/hadoop_tmp/hdfs/namenode</value>
+    </property>
+	<property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/usr/local/hadoop_tmp/hdfs/datanode</value>
+    </property>
+</configuration>
+
+16-Configuration file : yarn-site.xml
+
+<configuration>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+	<property>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
+</configuration>
+
+Configuration file : mapred-site.xml
+
+cp /usr/local/hadoop/etc/hadoop/mapred-site.xml.template /usr/local/hadoop/etc/hadoop/mapred-site.xml
+
+<configuration>
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+</configuration>
+
+17-Now create the folder where hadoop will process the hdfs job
+														-->sudo mkdir -P /usr/local/hadoop_tmp/hdfs/namenode
+														-->sudo mkdir -P /usr/local/hadoop_tmp/hdfs/datanode
+														-->sudo chown -R hduser /usr/local/hadoop_tmp/
+														
+18-Now format the name node () Go to user root --> cd ~
+-->hdfs namenode -format
+-->start-dfs.sh
+-->start-yarn.sh
+													
+
+=======================================================HIVE INSTALLATION================================================================================
+1- Create the Hive directory and move extracted files to that directory-
+mkdir  /usr/lib/hive
+
+2- Now put the hive path into .bashrc file
+#Hive home direcotry configuration
+export HIVE_HOME="/usr/lib/hive"
+export PATH="$PATH:$HIVE_HOME/bin"
+
+3- Put hadoop path inside hive-config.sh file
+Go to the line where the following statements are written
+
+# Allow alternate conf dir location.
+HIVE_CONF_DIR="${HIVE_CONF_DIR:-$HIVE_HOME/conf"
+export HIVE_CONF_DIR=$HIVE_CONF_DIR
+export HIVE_AUX_JARS_PATH=$HIVE_AUX_JARS_PATH
+
+Below this write the following
+export HADOOP_HOME=/usr/local/hadoop 
+
+4-start ssh localhost
+g-Give below command to start hive shell
+hive
+
+If any issue while starting hive
+---------------------------------
+Before you run hive for the first time, run
+
+schematool -initSchema -dbType derby
+If you already ran hive and then tried to initSchema and it's failing:
+
+mv metastore_db metastore_db.tmp
+Re run
+
+schematool -initSchema -dbType derby
+Run hive again
+-----------------------------------
+Exit from safe mode
+hadoopuser@arul-PC:/usr/local/hadoop/bin$ ./hadoop dfsadmin -safemode leave
+
+To check the hadoop missing blocks --> hdfs fsck /
+Check in detailed way-->  hdfs fsck / | egrep -v '^\.+$' | grep -v replica | grep -v Replica
+hdfs fsck -list-corruptfileblocks
+To delete the corrupted files --> hdfs fsck / -delete
+------------------------------------------------------------------------------------
+<property>
+    <name>hive.metastore.local</name>
+    <value>TRUE</value>
+    <description>controls whether to connect to remove metastore server or open a new metastore server in Hive Client JVM</description>
+</property>
+
+<property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://usr/lib/hive/apache-hive-0.13.0-bin/metastore_db? createDatabaseIfNotExist=true</value>
+    <description>JDBC connect string for a JDBC metastore</description>
+</property>
+
+<property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>com.mysql.jdbc.Driver</value>
+    <description>Driver class name for a JDBC metastore</description>
+</property>
+
+<property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>/usr/hive/warehouse</value>
+    <description>location of default database for the warehouse</description>
+ </property>													
+-----------------------------------------------------------------------------------------------------------------------------------------
+Run the putty--
+ifconfig --> To get the ip address for SSH connection
+inet addr:192.168.1.12--> ip address
+===========================================================================
+GITHUB links for practice
+https://github.com/rakeshv191987/hadoop_learning/blob/master/hadoop_learning/hive/retail_analysis/practicals.txt
+==============================================================================

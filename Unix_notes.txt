@@ -1,0 +1,64 @@
+1: File Listing pattern :
+> ls --> Listing all the files in alphabetical order
+> ls -l ---> Listing all the files in alphabetical order with details
+> ls -la --> Listing all the files in alphabetical order with details along with hidden files
+> ls -lr --> Listing all the files in reverse alphabetical order with details
+> ls -lt --> Listing all the files in time order with details (Means latest file come in last)
+
+2: Enable Passwordless connection : To get connect with any remote host via client(like putty,cygwin etc) without entering password everytime.
+> ssh-keygen (Run command in client)
+> Hit enter without any entry in id and password
+> Go in to hidden file .ssh
+> Copy public rsa id to remote machine
+> ssh-copy-id itversity@demo.itversity.com
+
+3: scp command syntax:
+> scp <filename with fully qualified path> <username>@<server name>:<remote machines fully qualified target path>
+
+4: Being in local we can execute commands in remote machine:
+> ssh itversity@demo.itversity.com "ls -ltr"
+
+5: To get the help for commands:
+> <command> --help : Brief explanation for commands
+> man <command> : It will give detailed explanation about the command
+
+6: Checking file system usage:
+> df --> Disk free information on file system level
+> df -h --> Disk free information in readable format
+> du --> Disk usage info on directory level
+> du -h --> Disk usage info on directory level in readable format
+
+7: Find command: TO find a specific file
+> find . -type d --> It will show aal directories from current directory.
+> find . -type d -name "*pattern*" --> It will show all the directories having specific patterns.
+> find . -mtime --> To get all the modified files in last 24 hours or any such time.
+
+8: top command : to get the list of top running processes and memory usage
+> top
+
+9: uptime command : It gives the CPU usage
+> uptime
+
+10: free command : To show all free and used memory
+> free or free -h
+
+11: Some network check commands:
+> ping : It will check if remote machine is accessible or  not.
+> telnet : It will check if remote machine is accessible with specific ports or not like 'telnet demo.itversity.com 22'.
+
+12: Sorting and unique commands;
+> cut -d':' -f1 <filename> --> It is taking the specified field from the file
+> cat <filename> | cut -d':' -f1(first field)|sort|uniq --> It is taking the specified field from the file and sorting with unique values.
+
+13: Ps command is used to monitor the processes.
+> ps haxo user,vsz,rss --> To get process ids with respective users
+
+14: grep command is used to serach a particular pattern in files:
+> grep 'test' <path>
+
+15: Standard output and error redirection:
+> cat find . -name '*' -type f 1>~find.log 2>find.err --> Here 1> is for std out and 2> for std error
+
+16: date formats
+> date '+%Y%m%s%H%M%S' -->20171212200150
+
