@@ -89,9 +89,9 @@ DS,Algo and Programming:
 1: DS&Algo with Java book
 2: Unix scripting - http://linuxcommand.org/lc3_wss0060.php --continue from start
 *********************************************Big Data Rampup Status**********************************************************************************
-1: Java -- Yet to start
-2: Hadoop Definitive guide -- Yet to start
-3: Map Reduce design pattern -- Yet to start
+1: Java -- Start from data type
+2: Hadoop Definitive guide -- 23 page
+3: Map Reduce design pattern (Page 17 having link for examples code)-- Start from page 18
 
 *********************************************New set**********************************************************************************
 1: Up to date with MapReduce, HDFS, Hive, Sqoop, Unix concepts
