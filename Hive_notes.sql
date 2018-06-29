@@ -252,3 +252,85 @@ output:
 
  Example: User Defined Aggregation Function
  
+ Complex Data Types: Array
+--------------------------
+ DDL:
+ 
+drop table if exists array_test; 
+create table array_test(id int,name string,marks array<double>) row format delimited fields terminated by ',' collection items terminated by '|';
+
+Data set:
+
+1,'a',12.4|23.3|85.1|44.3
+2,'b',13.4|93.3|82.1|04.3
+3,'c',14.4|23.3|80.1|24.3
+4,'d',10.4|73.3|83.1|74.3
+5,'e',17.4|43.3|86.1|24.3
+
+select id, marks[1] from array_test;
+1       23.3
+2       93.3
+3       23.3
+4       73.3
+5       43.3
+
+Example:
+create table table1(
+a string,
+b string,
+c int,
+table2 array<struct<id:int,name:string>>),
+table3 array<struct<id:int,address:string>>)
+stored as parquet;
+
+Complex Data Types: Map
+-----------------------
+DDL:
+
+drop table if exists map_test;
+create table map_test(school string, state string, gender string, total map<int,int>) row format delimited fields terminated by '\t' collection items terminated by ',' map keys terminated by ':';
+
+Data set:
+
+sec school	up	M	2015:62543,2016:35343,2017:35343
+pri school	mp	F	2015:62543,2016:35343,2017:35343
+sr sec school	up	M	2015:62543,2016:35343,2017:35343
+jnr school	br	F	2015:62543,2016:35343,2017:35343
+sec school	uk	M	2015:62543,2016:35343,2017:35343
+hr school	tn	F	2015:62543,2016:35343,2017:35343
+snr school	jk	M	2015:62543,2016:35343,2017:35343
+sec school	gj	F	2015:62543,2016:35343,2017:35343
+
+select school, total[2015] from map_test;
+sec school      62543
+pri school      62543
+sr sec school   62543
+jnr school      62543
+sec school      62543
+hr school       62543
+snr school      62543
+sec school      62543
+
+
+Complex Data Types: Struct
+--------------------------
+
+drop table if exists struct_test;
+create table struct_test (bike_name string, features struct<eng_type:string,power:float>) row format delimited fields terminated by '\t' collection items terminated by ',' ;
+
+royal	dow,63.3
+hero	eng,56.3
+moto	sup,54.3
+hero	white,54.3
+bajaj	mold,54.3
+harle	layer,54.3
+
+select features.eng_type;
+dow
+eng
+sup
+white
+mold
+layer
+
+ 
