@@ -1,0 +1,592 @@
+Initializing spark:
+-------------------
+> from pyspark import SparkContext, SparkConf
+1: Create SparkConf that contains information about the application.
+> conf = SparkConf().setAppName("TestApp").setMaster(master)
+
+What are the practical differences between Spark Standalone client deploy mode and cluster deploy mode? What are the pro's and con's of using each one?
+
+Let's try to look at the differences between client and cluster mode.
+
+Client:
+
+Driver runs on a dedicated server (Master node) inside a dedicated process. This means it has all available resources at it's disposal to execute work.
+Driver opens up a dedicated Netty HTTP server and distributes the JAR files specified to all Worker nodes (big advantage).
+Because the Master node has dedicated resources of it's own, you don't need to "spend" worker resources for the Driver program.
+If the driver process dies, you need an external monitoring system to reset it's execution.
+
+Cluster:
+
+Driver runs on one of the cluster's Worker nodes. The worker is chosen by the Master leader
+Driver runs as a dedicated, standalone process inside the Worker.
+Driver programs takes up at least 1 core and a dedicated amount of memory from one of the workers (this can be configured).
+Driver program can be monitored from the Master node using the --supervise flag and be reset in case it dies.
+When working in Cluster mode, all JARs related to the execution of your application need to be publicly available to all the workers. This means you can either manually place them in a shared place or in a folder for each of the workers.
+Which one is better? Not sure, that's actually for you to experiment and decide. This is no better decision here, you gain things from the former and latter, it's up to you to see which one works better for your use-case.
+
+How to I choose which one my application is going to be running on, using spark-submit
+
+The way to choose which mode to run in is by using the --deploy-mode flag. From the Spark Configuration page:
+
+/bin/spark-submit \
+  --class <main-class>
+  --master <master-url> \
+  --deploy-mode <deploy-mode> \
+  --conf <key>=<value> \
+  ... # other options
+  <application-jar> \
+  [application-arguments]
+  
+Application run plan:
+---------------------
+1: Submit the application --> Driver will create the logical DAG(Direct Acyclic Graph)
+2: Then it will convert logical DAG into physical DAG as stages and tasks inside stages.
+3: Then driver connect with cluster manager to provide resource as executor in worker node to execute the tasks of the application.
+5: Driver send the tasks to cluster manager as per data placement so it can run at appropriate executor.
+6: Before executor executions starts it register with Dirver , so driver can have holistic view of executors.
+
+Application execution mode:
+---------------------------
+Client:
+
+Driver runs on a dedicated server (Master node) inside a dedicated process. This means it has all available resources at it's disposal to execute work.
+Driver opens up a dedicated Netty HTTP server and distributes the JAR files specified to all Worker nodes (big advantage).
+Because the Master node has dedicated resources of it's own, you don't need to "spend" worker resources for the Driver program.
+If the driver process dies, you need an external monitoring system to reset it's execution.
+
+Cluster:
+
+Driver runs on one of the cluster's Worker nodes. The worker is chosen by the Master leader
+Driver runs as a dedicated, standalone process inside the Worker.
+Driver programs takes up at least 1 core and a dedicated amount of memory from one of the workers (this can be configured).
+Driver program can be monitored from the Master node using the --supervise flag and be reset in case it dies.
+When working in Cluster mode, all JARs related to the execution of your application need to be publicly available to all the workers. This means you can either manually place them in a shared place or in a folder for each of the workers.
+Which one is better? Not sure, that's actually for you to experiment and decide. This is no better decision here, you gain things from the former and latter, it's up to you to see which one works better for your use-case.
+
+
+/bin/spark-submit \
+  --class <main-class>
+  --master <master-url> \
+  --deploy-mode <deploy-mode> \
+  --conf <key>=<value> \
+  ... # other options
+  <application-jar> \
+  [application-arguments]  
+
+2: RDD creation:
+> By parallelize collection
+> By external datasets i.e calling a data file
+> By existing RDDs
+
+3: RDD operations:
+> It is an immutable, partitioned collection of records that can be operated on in parallel.
+> RDDs are just object of java,scala or python as per choice.
+> Types of RDDs: Generic RDDs, Key value pair RDDs.
+> Transformation : It creates new RDD by existing RDD using some logic. Basically it's' operation to create a RDD from other RDDs by using some logic.
+> Action return the result as per transformation i.e print the result etc.
+
+4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action datasets get called by RDDs.
+
+5: Spark Architecture:
+> Executor: The space in memory where put the data(RDDs, Dataframes) for execution.
+> Driver Program: It's' like namenode and resides in master node and contains spark context.
+> Worker Node: It's' like data node and contains all the task,cahce and executors.
+> Cluster Manager: It is cluster management fraemwork like yarn for hadoop.
+> Execution of any logic over RDD is called task.
+> Broadcast variables: These are used to save the read-only copy of data across the nodes. It allows the programmer to keep a read only variable cached on each machine rather than shipping a copy of it with tasks.
+> Accumulator variables: These are used for aggregating the information across the executors. These are same like counters in mapreduce. And accumulators will be called with action operation in RDD.
+> Broadcast is a read-only global variable, which all nodes of a cluster can read. Think of them more like as a lookup variables.
+> On the other hand think of accumulators as a global counter variable where each node of the cluster can write values in to. These are the variables that you want to keep updating as a part of your operation like for example while reading log lines, one would like to maintain a real time count of number of certain log type records identified.
+
+
+6: Spark Conf & Context:
+> Spark conf: Spark conf object holds the configuration properties of the application. Spark Conf stores the configuration parameters that spark driver will pass to spark context. Some of the parameters defines the properties of spark driver application and some of are used by spark to allocate resources on the cluster. 
+
+> Spark Context: It is heart of spark application. It acts as master of the spark application. Spark context allows driver application to access the cluster through resource manager. It's' used to create with help of sparkconf. 
+Spark Context creates the job -> Job broaken into stages -> Stages are broken into tasks -> which are scheduled by spark context on an executors.
+
+7: Shuffling in spark: Shuffle happens when transformations like reduceByKey, sortbyKey etc called. It means data transfer through network happenes to create new RDD by shuffling through all partitions.
+
+8: Parquet file format:
+> It is an open source file format but now can be use most of the hadoop ecosystem tools.
+> It is more proficient in terms of storage and performence.
+> It stores binary data in column oriented manner,
+> It is more good to read very specific columns from large number of coulmns.
+> It provides better compression to achive efficeint storage and processing.
+> It does not support ACID properties.
+
+9: ORC file format:
+> ORC format contains group of row data called strips, along with auxiliary information in file footer. At the file end postscript contains compression parameters and size of the compressed folders.
+> Default strip size is 250 MB.
+> Stripe files stores as row columnar fomat with light indexing.
+> File Footer contains a list of strips, no of rows in a strip, column data type and column level aggregates.
+> It stores rows data in groups called stripes and file footer with all the details like no rows per stripe, column data type etc.
+> It improves the performence while processing the data.
+> It is used when all column need to select with where clause as it use light indexing along with each file.
+
+10: map():
+> Takes one element and produce one element.
+> It returns a new RDD by passing through a function i.e if passing list then list will be returned with specified logic.
+> It produce an array to array.
+
+11: flatmap():
+> Takes an element and return 0 or more elements.
+> Returns a new RDD by passing through a function i.e if passing a list then output will be returned sequence of elements instead of list.
+> It flattens multiple arrays into single flatten array.
+
+map() and flatMap() demonstration:
+----------------------------------
+>>> gtRDD = sc.textFile("file:///home/impetus/Desktop/spark_home/input/greetings.txt")
+
+>>> gtRDD.collect()
+[u'Good day', u'How are you today', u'Happy birthday', u'Good evening', u'Good morning', u'Good night', u'Have a nice day', u'Enjoy your day', u'Enjoy to night']
+
+>>> gtRDD.map(lambda line: line.split(",")).collect()
+[[u'Good day'], [u'How are you today'], [u'Happy birthday'], [u'Good evening'], [u'Good morning'], [u'Good night'], [u'Have a nice day'], [u'Enjoy your day'], [u'Enjoy to night']]
+
+>>> gtRDD.map(lambda line: line.split(" ")).collect()
+[[u'Good', u'day'], [u'How', u'are', u'you', u'today'], [u'Happy', u'birthday'], [u'Good', u'evening'], [u'Good', u'morning'], [u'Good', u'night'], [u'Have', u'a', u'nice', u'day'], [u'Enjoy', u'your', u'day'], [u'Enjoy', u'to', u'night']]
+
+>>> gtRDD.map(lambda line: line).collect()
+[u'Good day', u'How are you today', u'Happy birthday', u'Good evening', u'Good morning', u'Good night', u'Have a nice day', u'Enjoy your day', u'Enjoy to night']
+
+>>> gtRDD.flatMap(lambda line: line).collect()
+[u'G', u'o', u'o', u'd', u' ', u'd', u'a', u'y', u'H', u'o', u'w', u' ', u'a', u'r', u'e', u' ', u'y', u'o', u'u', u' ', u't', u'o', u'd', u'a', u'y', u'H', u'a', u'p', u'p', u'y', u' ', u'b', u'i', u'r', u't', u'h', u'd', u'a', u'y', u'G', u'o', u'o', u'd', u' ', u'e', u'v', u'e', u'n', u'i', u'n', u'g', u'G', u'o', u'o', u'd', u' ', u'm', u'o', u'r', u'n', u'i', u'n', u'g', u'G', u'o', u'o', u'd', u' ', u'n', u'i', u'g', u'h', u't', u'H', u'a', u'v', u'e', u' ', u'a', u' ', u'n', u'i', u'c', u'e', u' ', u'd', u'a', u'y', u'E', u'n', u'j', u'o', u'y', u' ', u'y', u'o', u'u', u'r', u' ', u'd', u'a', u'y', u'E', u'n', u'j', u'o', u'y', u' ', u't', u'o', u' ', u'n', u'i', u'g', u'h', u't']
+
+>>> gtRDD.flatMap(lambda line: line.split()).collect()
+[u'Good', u'day', u'How', u'are', u'you', u'today', u'Happy', u'birthday', u'Good', u'evening', u'Good', u'morning', u'Good', u'night', u'Have', u'a', u'nice', u'day', u'Enjoy', u'your', u'day', u'Enjoy', u'to', u'night']
+
+>>> gtRDD.flatMap(lambda line: line.split(" ")).collect()
+[u'Good', u'day', u'How', u'are', u'you', u'today', u'Happy', u'birthday', u'Good', u'evening', u'Good', u'morning', u'Good', u'night', u'Have', u'a', u'nice', u'day', u'Enjoy', u'your', u'day', u'Enjoy', u'to', u'night']
+
+>>> gtRDD.flatMap(lambda line: line.split(",")).collect()
+[u'Good day', u'How are you today', u'Happy birthday', u'Good evening', u'Good morning', u'Good night', u'Have a nice day', u'Enjoy your day', u'Enjoy to night']
+
+>>> gtRDD.flatMap(lambda line: line.split(" ")).collect()
+[u'Good', u'day', u'How', u'are', u'you', u'today', u'Happy', u'birthday', u'Good', u'evening', u'Good', u'morning', u'Good', u'night', u'Have', u'a', u'nice', u'day', u'Enjoy', u'your', u'day', u'Enjoy', u'to', u'night']
+
+12: spark-submit:
+> It sends the application code to cluster and launch it to execute there.
+> Helps to provide the command line arguments while application execution. 
+
+
+Dataframes:
+-----------
+> It is the distributed collection of structured data.
+> We can add, remove rows and columns.
+> we can transform row to column and column to row.
+> We can change the order of rows as per value of the columns.
+> select and selectExpr are used to modify columns in dataframe.
+
+
+Spark SQL:
+----------
+> It is used to execute SQL queries.
+> It is used to read the hive data.
+
+Transformation using java:
+--------------------------
+groupBy():
+> All the values will be aggregates(grouped) with matching key i.e keys will be logically created.
+
+RDD Transformation:
+-------------------
+map(func) --> Return a new distributed dataset formed by passing each element of the source through a function func.
+
+flatMap() --> Similar to map, but each input item can be mapped to 0 or more output items (so func should return a Seq rather than a single item).
+
+filter(func) --> Return a new dataset formed by selecting those elements of the source on which func returns true.
+
+mapPartitions(func) --> It's like map but it do operation on partition wise i.e it will operate on each partition.
+Usage: If required dbconnection per RDD then go for mapPartition.
+
+
+mapPartitionWithIndex() --> Similar to mapPartition, but use an integer value as index of the partition.
+
+sample(withReplacement, fraction, seed) --> Sample a fraction of the data, with or without replacement, using a given random number generator seed.
+
+union(dataset) --> Return a new dataset that contains the union of the elements in the source dataset and the argument.
+
+intersection(other-dataset) --> Return a new RDD that contains the intersection of elements in the source dataset and the argument.
+
+distinct([numTasks])) --> Return a new dataset that contains the distinct elements of the source dataset.
+
+groupByKey([numTasks]) --> When called on a dataset of (K, V) pairs, returns a dataset of (K, Iterable<V>) pairs. 
+Note: If you are grouping in order to perform an aggregation (such as a sum or average) over each key, using reduceByKey or aggregateByKey will yield much better performance. 
+Note: By default, the level of parallelism in the output depends on the number of partitions of the parent RDD. You can pass an optional numTasks argument to set a different number of tasks.
+
+reduceByKey(func, [numTasks]) --> When called on a dataset of (K, V) pairs, returns a dataset of (K, U) pairs where the values for each key are aggregated using the given combine functions and a neutral "zero" value. Allows an aggregated value type that is different than the input value type, while avoiding unnecessary allocations. Like in groupByKey, the number of reduce tasks is configurable through an optional second argument.
+
+aggregateByKey(zeroValue)(seqOp, combOp, [numTasks]) --> When called on a dataset of (K, V) pairs, returns a dataset of (K, U) pairs where the values for each key are aggregated using the given combine functions and a neutral "zero" value. Allows an aggregated value type that is different than the input value type, while avoiding unnecessary allocations. Like in groupByKey, the number of reduce tasks is configurable through an optional second argument.
+
+sortByKey([ascending], [numTasks]) --> When called on a dataset of (K, V) pairs where K implements Ordered, returns a dataset of (K, V) pairs sorted by keys in ascending or descending order, as specified in the boolean ascending argument.
+
+join(otherDataset, [numTasks]) --> input: (k,v)&(k,w) --> output: (k,(v,w)). When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through leftOuterJoin, rightOuterJoin, and fullOuterJoin.
+
+cogroup(otherDataset, [numTasks]) --> input: (k,v)&(k,w) --> output: (k,Iterable(v),Iterable(w)). this is also called groupwith transformation. When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (Iterable<V>, Iterable<W>)) tuples. This operation is also called groupWith.
+
+cartesian(otherDataset) --> When called on datasets of types T and U, returns a dataset of (T, U) pairs (all pairs of elements).
+
+pipe(command, [envVars]) --> Pipe each partition of the RDD through a shell command, e.g. a Perl or bash script. RDD elements are written to the process's stdin and lines output to its stdout are returned as an RDD of strings.
+
+coalesce(numPartitions) --> Decrease the number of partitions in the RDD to numPartitions. Useful for running operations more efficiently after filtering down a large dataset.
+
+repartition(numPartitions) --> Reshuffle the data in the RDD randomly to create either more or fewer partitions and balance it across them. This always shuffles all data over the network.
+
+repartitionAndSortWithinPartitions(partitioner)	--> Repartition the RDD according to the given partitioner and, within each resulting partition, sort records by their keys. This is more efficient than calling repartition and then sorting within each partition because it can push the sorting down into the shuffle machinery.
+
+RDD Action:
+-----------
+reduce(func) --> Aggregate the elements of the dataset using a function func (which takes two arguments and returns one). The function should be commutative and associative so that it can be computed correctly in parallel.
+
+fold() --> The signature of the fold() is like reduce(). Besides, it takes “zero value” as input, which is used for the initial call on each partition. But, the condition with zero value is that it should be the identity element of that operation. The key difference between fold() and reduce() is that, reduce() throws an exception for empty collection, but fold() is defined for empty collection.
+For example, zero is an identity for addition; one is identity element for multiplication. The return type of fold() is same as that of the element of RDD we are operating on.
+For example, rdd.fold(0)((x, y) => x + y).
+
+count() --> Return the number of elements in the dataset.
+
+collect() --> Return all the elements of the dataset as an array at the driver program. This is usually useful after a filter or other operation that returns a sufficiently small subset of the data.
+
+first() --> Return the first element of the dataset (similar to take(1)).
+
+take(n) --> Return an array with the first n elements of the dataset.
+
+takeSample(withReplacement, num, [seed]) --> Return an array with a random sample of num elements of the dataset, with or without replacement, optionally pre-specifying a random number generator seed.
+
+takeOrdered(n, [ordering]) --> Return the first n elements of the RDD using either their natural order or a custom comparator.
+
+saveAsTextFile(path) --> Write the elements of the dataset as a text file (or set of text files) in a given directory in the local filesystem, HDFS or any other Hadoop-supported file system. Spark will call toString on each element to convert it to a line of text in the file.
+
+saveAsSequenceFile(path)  --> Write the elements of the dataset as a Hadoop SequenceFile in a given path in the local filesystem, HDFS or any other Hadoop-supported file system. This is available on RDDs of key-value pairs that implement Hadoop's Writable interface. In Scala, it is also available on types that are implicitly convertible to Writable (Spark includes conversions for basic types like Int, Double, String, etc).
+
+saveAsObjectFile(path) --> Write the elements of the dataset in a simple format using Java serialization, which can then be loaded using SparkContext.objectFile().
+
+countByKey() --> Only available on RDDs of type (K, V). Returns a hashmap of (K, Int) pairs with the count of each key.
+
+foreach(func) --> Run a function func on each element of the dataset. This is usually done for side effects such as updating an Accumulator or interacting with external storage systems. 
+Note: modifying variables other than Accumulators outside of the foreach() may result in undefined behavior. See Understanding closures for more details.
+
+
+foreach and foreachPartitions are actions.
+
+foreach(function): Unit
+A generic function for invoking operations with side effects. For each element in the RDD, it invokes the passed function . This is generally used for manipulating accumulators or writing to external stores.
+
+Note: modifying variables other than Accumulators outside of the foreach() may result in undefined behavior. See Understanding closures for more details.
+
+foreachPartition(function) --> Similar to foreach() , but instead of invoking function for each element, it calls it for each partition. The function should be able to accept an iterator. This is more efficient than foreach() because it reduces the number of function calls (just like mapPartitions()).
+Usage: foreachPartition should be used when you are accessing costly resources such as database connections etc.. which would initialize one per partition rather than one per element(foreach). when it comes to accumulators you can measure the performance by above test methods, which should work faster in case of accumulators as well.
+
+top() --> If ordering is present in our RDD, then we can extract top elements from our RDD using top(). Action top() use default ordering of data.
+
+fold() --> The signature of the fold() is like reduce(). Besides, it takes “zero value” as input, which is used for the initial call on each partition. But, the condition with zero value is that it should be the identity element of that operation. The key difference between fold() and reduce() is that, reduce() throws an exception for empty collection, but fold() is defined for empty collection.
+
+aggregate() --> It gives us the flexibility to get data type different from the input type. The aggregate() takes two functions to get the final result. Through one function we combine the element from our RDD with the accumulator, and the second, to combine the accumulator. Hence, in aggregate, we supply the initial zero value of the type which we want to return.
+
+Spark job execution mode:
+1: local
+--------
+Ex:
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master local[8] \
+  /path/to/examples.jar \
+  100
+  
+2: Standalone
+-------------
+Ex:
+# Run on a Spark standalone cluster in client deploy mode
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master spark://207.184.161.138:7077 \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  /path/to/examples.jar \
+  1000
+# Run on a Spark standalone cluster in cluster deploy mode with supervise
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master spark://207.184.161.138:7077 \
+  --deploy-mode cluster \
+  --supervise \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  /path/to/examples.jar \
+  1000
+  
+3: yarn
+-------
+Ex:
+# Run on a YARN cluster
+export HADOOP_CONF_DIR=XXX
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master yarn \
+  --deploy-mode cluster \  # can be client for client mode
+  --executor-memory 20G \
+  --num-executors 50 \
+  /path/to/examples.jar \
+  1000
+  
+4: Mesos
+--------
+# Run on a Mesos cluster in cluster deploy mode with supervise
+./bin/spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master mesos://207.184.161.138:7077 \
+  --deploy-mode cluster \
+  --supervise \
+  --executor-memory 20G \
+  --total-executor-cores 100 \
+  http://path/to/examples.jar \
+  1000
+
+Spark job deployment mode:
+1: Client mode
+2: Cluster mode
+
+DataFrames & DatSets:
+---------------------
+-----------------------------------------------------------
+1: Creating DataFrames
+2: Untyped Dataset Operations (aka DataFrame Operations)
+3: Running SQL Queries Programmatically
+4: Global Temporary View
+
+5: Creating Datasets --> Datasets are similar to RDDs, however, instead of using Java serialization or Kryo they use a specialized Encoder to serialize the objects for processing or transmitting over the network. While both encoders and standard serialization are responsible for turning an object into bytes, encoders are code generated dynamically and use a format that allows Spark to perform many operations like filtering, sorting and hashing without deserializing the bytes back into an object.
+
+6: Interoperating with RDDs
+> Inferring the Schema Using Reflection --> Spark SQL using two ways to create dataset from existing RDD: 1- Use Reflection to infer schema of RDD, 2- Create schema programatically and apply while creating the dataset.
+> Programmatically Specifying the Schema
+7: Aggregations
+> Untyped User-Defined Aggregate Functions
+> Type-Safe User-Defined Aggregate Functions
+8: Data Sources
+> Generic Load/Save Functions
+ > Manually Specifying Options --> Dataset<Row> peopleJsonDF = spark.read().format("json").load("C:\\\\Users\\\\vivek.kumar\\\\Desktop\\\\Project\\\\DataSets\\\\spark\\\\Doc_example\\\\people.json");
+ peopleJsonDF.write().format("parquet").save("C:\\\\Users\\\\vivek.kumar\\\\Desktop\\\\Project\\\\DataSets\\\\spark\\\\Doc_example\\\\peoplejsonparquet");
+ > Run SQL on files directly --> spark.sql("select * from parquet.`C:\\Users\\vivek.kumar\\Desktop\\Project\\DataSets\\spark\\Doc_example\\users.parquet`").show();
+ > Save Modes --> Save operations can optionally take a SaveMode, that specifies how to handle existing data if present. It is important to realize that these save modes do not utilize any locking and are not atomic. Additionally, when performing an Overwrite, the data will be deleted before writing out the new data.
+ > Saving to Persistent Tables --> DataFrames can also be saved as persistent tables into Hive metastore using the saveAsTable command. Notice that an existing Hive deployment is not necessary to use this feature. Spark will create a default local Hive metastore (using Derby) for you. Unlike the createOrReplaceTempView command, saveAsTable will materialize the contents of the DataFrame and create a pointer to the data in the Hive metastore. Persistent tables will still exist even after your Spark program has restarted, as long as you maintain your connection to the same metastore. A DataFrame for a persistent table can be created by calling the table method on a SparkSession with the name of the table.
+ Note: To repair metdata of hive table: MSCK REPAIR TABLE
+ > Bucketing, Sorting and Partitioning
+9: Parquet Files --> Parquet is a columnar format that is supported by many other data processing systems. Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data. When writing Parquet files, all columns are automatically converted to be nullable for compatibility reasons.
+> Loading Data Programmatically
+> Partition Discovery
+> Schema Merging
+> Hive metastore Parquet table conversion
+ > Hive/Parquet Schema Reconciliation
+ > Metadata Refreshing
+10: Configuration
+11: JSON Datasets
+12: Hive Tables
+13: Specifying storage format for Hive tables
+14: Interacting with Different Versions of Hive Metastore
+15: JDBC To Other Databases
+16: Troubleshooting
+17: Performance Tuning
+> Caching Data In Memory
+> Other Configuration Options
+18: Distributed SQL Engine
+> Running the Thrift JDBC/ODBC server
+> Running the Spark SQL CLI
+-----------------------------------------------------------
+Note: We can create DF&DS from existing RDD, Hive tables, external sources.
+DataFrame: It is a distributed collection of data organized into named columns.It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood. DataFrames can be constructed from a wide array of sources such as: structured data files, tables in Hive, external databases, or existing RDDs.
+
+DatSet: A Dataset is a distributed collection of data. Dataset is a new interface added in Spark 1.6 that provides the benefits of RDDs (strong typing, ability to use powerful lambda functions) with the benefits of Spark SQL’s optimized execution engine. A Dataset can be constructed from JVM objects and then manipulated using functional transformations (map, flatMap, filter, etc.).
+
+Note: As mentioned above, in Spark 2.0, DataFrames are just Dataset of Rows in Scala and Java API. These operations are also referred as “untyped transformations” in contrast to “typed transformations” come with strongly typed Scala/Java Datasets.
+
+Dataset creation:
+> With a SparkSession, applications can create DataFrames from an existing RDD, from a Hive table, or from Spark data sources.
+
+1: Dataset creation from existing RDD:
+-----------------------------------
+> Infering the schema using reflection --> Create RDD from file of java bean type i.e Person --> pass through map() function and set the values into Person objects --> create dataset of Row type by using rdd and Person.class as schema.
+
+> Programmatically specifying the schema --> Create RDD from file of simple String type --> Pass schemastring into a string type variable --> create StructType schema by passing List of StructField into create structfield() method to create StructType schema --> Create Row type rdd by passing string type rdd through map using RowFactory class --> then call createdataframe method to create dataframe of Row type.
+
+Note: While creating dataset , it needs seralized reflection of schema i.e encoded reflection.
+
+2: Dataset creation from Hive or RDBMS tables:
+----------------------------------------------
+
+3: Dataset creation from spark data sources(files):
+---------------------------------------------------
+
+TempView: 
+> we can create temp or global view from dataframe or dataset.
+> Temporary views in Spark SQL are session-scoped and will disappear if the session that creates it terminates. If you want to have a temporary view that is shared among all sessions and keep alive until the Spark application terminates, you can create a global temporary view. Global temporary view is tied to a system preserved database global_temp, and we must use the qualified name to refer it, e.g. SELECT * FROM global_temp.view1.
+
+Encoders: Encoders are used to serialize the objects to process and store over the network.While both encoders and standard serialization are responsible for turning an object into bytes, encoders are code generated dynamically and use a format that allows Spark to perform many operations like filtering, sorting and hashing without deserializing the bytes back into an object.
+
+Optimization techniques: 
+------------------------
+> 1: Cost based optimization 
+> 2: Rule based optimization(Catalyst is a modular library)
+
+Examples Chapter 1&2: 
+---------------------
+
+1: Word Count:
+gtRDD = sc.textFile("file:///home/impetus/Desktop/spark_home/input/greetings.txt")
+gtWords = gtRDD.flatMap(lambda line: line.split(" "))
+gtWordsOne = gtWords.map(lambda word: (word,1))
+wordCount = gtWordsOne.reduceByKey(lambda a,b: a+b)
+wordCount.saveAsTextFile("file:///home/impetus/Desktop/spark_home/output")
+
+val a= sc.textFile("file:///home/impetus/Desktop/spark_home/input/greetings.txt").flatMap(x=> x.split(" ")).map(x=> (x,1)).reduceByKey(x,y => (x+y))
+
+2: read csv and perform transformations:
+
+flightData2015 = spark.read.option("inferSchema","true").option("header","true").csv("C:\\Users\\vivek.kumar\\Desktop\\Project\\DataSets\\spark\\flight\\2015-summary.csv")
++-----------------+-------------------+-----+
+|DEST_COUNTRY_NAME|ORIGIN_COUNTRY_NAME|count|
++-----------------+-------------------+-----+
+|    United States|            Romania|   15|
+|    United States|            Croatia|    1|
+|    United States|            Ireland|  344|
+|            Egypt|      United States|   15|
+|    United States|              India|   62|
++-----------------+-------------------+-----+
+flightData2015.sort("count").explain()
+spark.conf.set("spark.sql.shuffle.partitions","5")
+flightData2015.sort("count").take(2)
+flightData2015.createOrReplaceTempView("flight_data_2015")
+
+sqlWay = spark.sql("""select DEST_COUNTRY_NAME,count(1) from flight_data_2015 group by DEST_COUNTRY_NAME""")
+dataframeWay = flightData2015.groupBy("DEST_COUNTRY_NAME").count()
+
+>>> sqlWay.explain()
+== Physical Plan ==                                                                                                                                                                                                                           
+*(2) HashAggregate(keys=[DEST_COUNTRY_NAME#10], functions=[count(1)])                                                                                                                                                                         
++- Exchange hashpartitioning(DEST_COUNTRY_NAME#10, 5)                                                                                                                                                                                         
+   +- *(1) HashAggregate(keys=[DEST_COUNTRY_NAME#10], functions=[partial_count(1)])                                                                                                                                                           
+      +- *(1) FileScan csv [DEST_COUNTRY_NAME#10] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/C:/Users/vivek.kumar/Desktop/Project/DataSets/spark/flight/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<DEST_COUNTRY_NAME:string>
+                                                    
+>>> dataframeWay.explain()                                                                                                                                                                                                                    
+== Physical Plan ==                        
+*(2) HashAggregate(keys=[DEST_COUNTRY_NAME#10], functions=[count(1)])                                                                                                                                                                         
++- Exchange hashpartitioning(DEST_COUNTRY_NAME#10,5)                                                                                                                                                                                         
+   +- *(1) HashAggregate(keys=[DEST_COUNTRY_NAME#10], functions=[partial_count(1)])                                                                                                                                                           
+      +- *(1) FileScan csv [DEST_COUNTRY_NAME#10] Batched: false, Format: CSV, Location: InMemoryFileIndex[file:/C:/Users/vivek.kumar/Desktop/Project/DataSets/spark/flight/2015-summary.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<DEST_COUNTRY_NAME:string>                                                                                                                                                                                       
+
+spark.sql("""select max(count) from flight_data_2015""").show(5)
++----------+ 	  
+|max(count)| 
++----------+ 
+|    370002| 
++----------+ 
+
+from pyspark.sql.functions import max
+flightData2015.select(max("count")).show(1)
++----------+  
+|max(count)|  
++----------+  
+|    370002|  
++----------+  
+
+maxSql = spark.sql("""select DEST_COUNTRY_NAME,sum(count) as destination_total from flight_data_2015 group by DEST_COUNTRY_NAME order by sum(count) desc limit 5""")
+maxSql.show()
++-----------------+-----------------+
+|DEST_COUNTRY_NAME|destination_total|
++-----------------+-----------------+
+|    United States|           411352|
+|           Canada|             8399|
+|           Mexico|             7140|
+|   United Kingdom|             2025|
+|            Japan|             1548|
++-----------------+-----------------+
+
+
+from pyspark.sql.functions import desc
+maxDf = flightData2015.groupBy("DEST_COUNTRY_NAME").sum("count").withColumnRenamed("sum(count)","destination_total").sort(desc("destination_total")).limit(5).show()
++-----------------+-----------------+
+|DEST_COUNTRY_NAME|destination_total|
++-----------------+-----------------+
+|    United States|           411352|
+|           Canada|             8399|
+|           Mexico|             7140|
+|   United Kingdom|             2025|
+|            Japan|             1548|
++-----------------+-----------------+
+
+Examples Chapter-5:
+-------------------
+Basic structured operations
+
+#Read data from json file
+df = spark.read.format("json").load("C:\\Users\\vivek.kumar\\Desktop\\Project\\DataSets\\spark\\flight\\2015-summary.json")
+df.printSchema
+
+from pyspark.sql.functions import col. column
+col("num")
+column("num")
+
+#create temp view or table from dataframe
+df.createOrReplaceTempView("dfTable")
+
+#Create the DF on fly using manual schema
+spark.conf.set("spark.sql.shuffle.partitions","5")
+flightData2015.sort("count").take(2)
+
+myManualSchema = StructType([
+    StructField("some",StringType(),True),
+    StructField("col",StringType(),True),
+    StructField("names",LongType(),True)
+    ])
+
+myRow = Row("Hello","world",1)
+
+myDF = spark.createDataFrame([myRow],myManualSchema)
+myDF.show()
+
+
+#Use of select and selectExpr method()
+ df.select("DEST_COUNTRY_NAME").show(2)
+ df.select("DEST_COUNTRY_NAME","ORIGIN_COUNTRY_NAME","count").show(5)
+ 
+ from pyspark.sql.functions import expr
+ df.select(expr("DEST_COUNTRY_NAME as destination")).show(5)
+ 
+df.selectExpr("DEST_COUNTRY_NAME as destination","DEST_COUNTRY_NAME").show(5)
+df.selectExpr("*","(DEST_COUNTRY_NAME=ORIGIN_COUNTRY_NAME) as withInCountry").show(5)
+
+#Adding column
+from pyspark.sql.functions import lit
+df.withColumn("one",lit(1)).show(5)
+
+#Renaming column
+df.withColumnRenamed("DEST_COUNTRY_NAME","Destination").columns
+
+#Drop the dedicated column
+df.drop("DEST_COUNTRY_NAME").columns
+
+#Filter the records using filter() method
+df.filter(col("count")>2).show(2)
+
+#Filter with mutiple conditions
+df.where(col("count")>2).where(col("DEST_COUNTRY_NAME")!= "United States").show(5)
+
+#Submit java application using spark-submit
+./bin/spark-submit \
+  --class sparkrddexamples.SparkTransformationExamples.java \
+  --master local[8] \
+  /path/to/examples.jar \
+  100
+
+#Command to run in yarn mode
+--Add these properties
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+  
+/usr/local/spark/bin/spark-submit --class sparkrddexamples.SparkTransformationExamples --master yarn /home/impetus/Desktop/spark_jars/java_spark-0.0.1-SNAPSHOT.jar
+
+
+#To see logs from yarn
+yarn logs -applicationId application_1473860344791_0001
+
+#Command to run in windows
+C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.SparkTransformationExamples --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
