@@ -250,9 +250,9 @@ output:
 4   15
  
 
- Example: User Defined Aggregation Function
+Example: User Defined Aggregation Function
  
- Complex Data Types: Array
+Complex Data Types: Array
 --------------------------
  DDL:
  
@@ -333,4 +333,334 @@ white
 mold
 layer
 
+
+Hive tables for json file formats:
+----------------------------------
+1: JSON format
+
+Dataset:
+--------
+{"one":true,"three":["red","yellow","orange"],"two":19.5,"four":"poop"}
+{"one":false,"three":["red","yellow","black"],"two":129.5,"four":"stars"}
+{"one":false,"three":["pink","gold"],"two":222.56,"four":"fiat"}
+
+DDL:
+----
+create table if not exists josn_test(
+one string
+,three array<string>
+,two double, four string
+) row format serde 'org.apache.hive.hcatalog.data.JsonSerDe' 
+stored as textfile;
+
+Load dataset into table:
+------------------------
+load data local inpath '/home/vivekyadav/input/json_test/json_test.json' into table josn_test;
+
+
+Hive tables for sequence file formats:
+--------------------------------------
+2; SEQUENCE file format
+
+Dataset:
+--------
+
+
+DDL:
+----
+
+
+Load dataset into table:
+------------------------
+
+Hive file formats
+https://acadgild.com/blog/apache-hive-file-formats
+https://acadgild.com/blog/parquet-file-format-hadoop
+https://acadgild.com/blog/avro-hive
+> Text, RC, ORC, SEQUENCE are build in formats
+> Avro, parquet: Stores binary data in column oriented format, good for column specific read
+Custom SerDe
+UDFs
+Analytic functions
+PARTITIONing and bucketing
+
+
+UDAF & UDTF:
+------------
+Command to execute UDF:
+-----------------------
+add jar /home/vivekyadav/mrjars/mr-unit-test.jar;
+create temporary function udf_strip as 'udf.UDF_STRIP';
+
+Dataset:
+
+269.6
+174.6
+235.6
+723.6
+334.6
+506.6
+406.6
+133.6
+
+create table if exists udaf_test(num int);
+create temporary function udaf_max as 'udf.UDAF_Maximum';
+
+create table if not exists udafmean_test(num_double double);
+load data local inpath '/home/vivekyadav/input/udf/udaf_mean.txt' into table udafmean_test;
+udaf_mean.txt
+create temporary function udaf_mean as 'udf.UDAF_Mean';
+
+
+
+Analytical function:
+-------------------- 
+
+PAT_ID | INS_AMT | DEPT_ID 
+--------+---------+--------- 
+create table patient(pat_id int, ins_amt int, dept_id int) row format delimited fields terminated by ',';
  
+load data local inpath '/home/vivekyadav/input/ana_win/patient.txt' into table patient;
+ 
+1,100000,111
+3,150000,222
+5,50000,111
+5,890000,222
+7,110000,333
+2,150000,111
+4,250000,222
+6,90000,111
+8,10000,444
+
+
+select pat_id, dept_id, sum(ins_amt) over (partition by dept_id order by dept_id) as tot_am from patient;
+6       111     390000
+2       111     390000
+5       111     390000
+1       111     390000
+4       222     1290000
+5       222     1290000
+3       222     1290000
+7       333     110000
+8       444     10000
+
+select dept_id, sum(ins_amt) over (partition by dept_id order by dept_id) as tot_am from patient;
+111     390000
+111     390000
+111     390000
+111     390000
+222     1290000
+222     1290000
+222     1290000
+333     110000
+444     10000
+
+
+select 
+pat_id,
+dept_id
+,min(ins_amt) over (partition by dept_id order by dept_id asc) as min_amt
+,max(ins_amt) over (partition by dept_id order by dept_id asc) as max_amt
+from patient;
+
+6       111     50000   150000
+2       111     50000   150000
+5       111     50000   150000
+1       111     50000   150000
+4       222     150000  890000
+5       222     150000  890000
+3       222     150000  890000
+7       333     110000  110000
+8       444     10000   10000
+
+--lead & lag
+
+select pat_id, dept_id,
+ins_amt, 
+lead(ins_amt,1,0) over (partition by dept_id) as lead_amt, 
+lag(ins_amt,1,0) over (partition by dept_id) as lag_amt 
+from patient;
+
+6       111     90000   150000  0
+2       111     150000  50000   90000
+5       111     50000   100000  150000
+1       111     100000  0       50000
+4       222     250000  890000  0
+5       222     890000  150000  250000
+3       222     150000  0       890000
+7       333     110000  0       0
+8       444     10000   0       0
+
+select
+pat_id
+,dept_id
+,ins_amt
+,first_value(ins_amt) over (partition by dept_id order by ins_amt asc)
+,last_value(ins_amt) over (partition by dept_id order by ins_amt asc)
+from patient;
+
+5       111     50000   50000   50000
+6       111     90000   50000   90000
+1       111     100000  50000   100000
+2       111     150000  50000   150000
+3       222     150000  150000  150000
+4       222     250000  150000  250000
+5       222     890000  150000  890000
+7       333     110000  110000  110000
+8       444     10000   10000   10000
+
+select
+pat_id
+,dept_id
+,ins_amt
+,first_value(ins_amt) over (partition by dept_id order by dept_id asc)
+,last_value(ins_amt) over (partition by dept_id order by dept_id asc)
+from patient;
+
+6       111     90000   90000   100000
+2       111     150000  90000   100000
+5       111     50000   90000   100000
+1       111     100000  90000   100000
+4       222     250000  250000  150000
+5       222     890000  250000  150000
+3       222     150000  250000  150000
+7       333     110000  110000  110000
+8       444     10000   10000   10000
+
+--#Hive Transactional tables:
+----------------------------
+> ACID properties are vital and neccesory for transactional tables.
+Atomicity: Atomicity means, a transaction should complete successfully or else it should fail completely i.e. it should not be left partially. 
+
+Consistency: Consistency ensures that any transaction will bring the database from one valid state to another state.
+
+Isolation: Isolation states that every transaction should be independent of each other i.e. one transaction should not affect another.
+
+Durability: Durability states that if a transaction is completed, it should be preserved in the database even if the machine state is lost or a system failure might occur.
+
+Some pre-requisites for transactio tables:
+> Table should have ORC file format
+> It should be bucketed
+> Below properties should be set turn ON
+set hive.support.concurrency = true;
+set hive.enforce.bucketing = true;
+set hive.exec.dynamic.partition.mode = nonstrict;
+set hive.txn.manager = org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+set hive.compactor.initiator.on = true;
+set hive.compactor.worker.threads = a positive number on at least one instance of the Thrift metastore service;
+
+> Create table:
+create table college_trans (clg_id int, clg_name string, clg_loc string) clustered by (clg_id) into 5 buckets stored as orc TBLPROPERTIES('transactional'='true');
+
+> Insert the values into table
+insert into table college_trans values(1,'nec','nlr'),(2,'vit','vlr'),(3,'srm','chen'),(4,'lpu','del'),(5,'stanford','uk'),(6,'JNTUA','atp'),(7,'cambridge','us');
+
+-- Update is not possible on bucketed column
+> update college_trans set clg_id = 8 where clg_id = 7;
+Output:
+FAILED: SemanticException [Error 10302]: Updating values of bucketing columns is not supported.  Column clg_id.
+
+--Update is possible in bucketed column
+> update college_trans set clg_name = 'IIT' where clg_id = 7;
+output:
+5       stanford        uk
+6       JNTUA   atp
+1       nec     nlr
+7       IIT     us
+2       vit     vlr
+3       srm     chen
+4       lpu     del
+
+-- Delete operation
+> delete * from college_trans where clg_id = 6;
+output:
+5       stanford        uk
+1       nec     nlr
+7       IIT     us
+2       vit     vlr
+3       srm     chen
+4       lpu     del
+
+
+
+--# Hie update: Merge strategy
+--Part:1 --> SQL Merge
+--Merge Syntax:
+MERGE INTO <target table>
+ USING <table reference>
+ON <search condition>
+ <merge when clause>...
+WHEN MATCHED [ AND <search condition> ]
+THEN <merge update or delete specification>
+WHEN NOT MATCHED [ AND <search condition> ]
+THEN <merge insert specification>
+
+Example: Create tables with attributes : id, name, email, state, signup
+--Table 1: customer_partitioned
+drop table if exists customer_partitioned;
+create table if not exists customer_partitioned(id int, name string, email string, state string) partitioned by (signup date) clustered by (id) into 2 buckets stored as orc tblproperties('transactionl'='true');
+--Data:
+
+--Raw table with data
+drop table if exists customer_partitioned_raw;
+create table customer_partitioned_raw(id int, name string, email string, state string, signup date) row format delimited fields terminated by ',';
+1,samiie, samiie@mail.com,'pa',2017-01-09
+2,Hazie, samiie@mail.com,'ga',2017-01-05
+3,Allyn, samiie@mail.com,'nv',2017-01-08
+4,zemlack, samiie@mail.com,'wa',2017-01-03
+load data local inpath '/home/vivekyadav/hive_data/merge/customer' into table customer_partitioned_raw;
+ 
+insert into table customer_partitioned partition (signup) select * from customer_partitioned_raw;
+
+--Table 2: customer_updated
+drop table if exists customer_updated;
+create table customer_updated(id int, name string, email string, state string) partitioned by (signup date) clustered by (id) into 2 buckets stored as orc tblproperties('transactionl'='true');
+
+--Raw table with data
+drop table if exists customer_updated_raw;
+create table customer_updated_raw(id int, name string, email string, state string, signup date) row format delimited fields terminated by ',';
+1,samiie, zammy@mail.com,'pa',2017-01-09
+2,Hazie, samiie@mail.com,'ok',2017-01-05
+3,Allyn, samiie@mail.com,'nv',2017-01-08
+4,zemlack, samiie@mail.com,'wa',2017-01-03
+5,zemlack, zem@mail.com,'np',2017-01-10
+6,zack, lay@mail.com,'lp',2017-01-11
+load data local inpath '/home/vivekyadav/hive_data/merge/customer_updated' into table customer_updated_raw;
+ 
+insert into table customer_updated partition (signup) select * from customer_updated_raw;
+
+
+--Merge query to do upsert
+MERGE into customer_partitioned cp using customer_updated cu on cp.id=cu.id when matched then update set cp.email=cu.email, cp.state=cu.state when not matched then insert values(cu.id,cu.name,cu.email,cu.state,cu.signup);
+
+
+
+--# Hie update: 4 step update strategy
+
+--#Optimization techniques in HIVE:
+1: Predicate pushdown
+2: PARTITIONing
+3: De-normalizing data
+4: Compress mapreduce output
+5: Map Join 
+6: Bucketing
+7: Parallel execution
+8: Vectorization
+
+--#Predicate pushdown strategy
+> The basic idea of predicate pushdown is that certain parts of sql queries(the predicates) can be pushed to where data lives.
+> Generally when executing SQL queries, a JOIN will be performed before the filtering used in the WHERE clause. In Hive (MapReduce), predicate pushdown is used to filter data in the map phase before sending over the network to the reduce phase.
+
+Ex:For example in this query the WHERE a.country = 'Argentina' will be evaluated in the map phase, reducing the amount data sent over the network:
+
+SELECT
+  a.*
+FROM
+  table1 a
+JOIN 
+  table2 b ON a.id = b.id
+WHERE
+  a.country = 'Argentina';
+
+Predicate Pushdown in Parquet/ORC files:
+Parquet and ORC files maintain various stats about each column in different chunks of data (such as min and max values). Programs reading these files can use these indexes to determine if certain chunks, and even entire files, need to be read at all.  This allows programs to potentially skip over huge portions of the data during processing.  
