@@ -424,8 +424,23 @@ Encoders: Encoders are used to serialize the objects to process and store over t
 
 Optimization techniques: 
 ------------------------
-> 1: Cost based optimization 
-> 2: Rule based optimization(Catalyst is a modular library)
+Catalyst: It is a functional query optimization framework. It supports both rule based and cost based optimizatio techniques. We use Catalyst's general transformation in four phases:
+1: Analysis : Spark SQL uses Catalyst rules and a Catalog object that tracks the tables in all data sources to resolve these attributes. 
+2: Logical optimization : The logical optimization phase applies standard rule-based optimizations to the logical plan. And Cost-based optimization is performed by generating multiple plans using rules, and then computing their costs. These include constant folding, predicate pushdown, projection pruning, null propagation, Boolean expression simplification, and other rules.
+3: Physical planning : Spark SQL takes a logical plan and generates one or more physical plans, using physical operators that match the Spark execution engine. It then selects a plan using a cost model.At the moment, cost-based optimization is only used to select join algorithms: for relations that are known to be small, Spark SQL uses a broadcast join, using a peer-to-peer broadcast facility available in Spark. 
+4: Code Generation : The final phase of query optimization involves generating Java bytecode to run on each machine.
+
+Trees: 
+> Tree contains node objects.
+> Objects are immutable in nature.
+
+Rules: We can manipulate tree using rules.
+> we can define rules as function from one tree to another tree.
+
+> 1: Rule based optimization(Catalyst is a modular library)
+
+> 2: Cost based optimization 
+
 
 Examples Chapter 1&2: 
 ---------------------
@@ -567,10 +582,10 @@ df.drop("DEST_COUNTRY_NAME").columns
 #Filter the records using filter() method
 df.filter(col("count")>2).show(2)
 
-#Filter with mutiple conditions
+#Filter with multiple conditions
 df.where(col("count")>2).where(col("DEST_COUNTRY_NAME")!= "United States").show(5)
 
-#Submit java application using spark-submit
+#Submit Java application using spark-submit
 ./bin/spark-submit \
   --class sparkrddexamples.SparkTransformationExamples.java \
   --master local[8] \
