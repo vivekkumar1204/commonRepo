@@ -17,10 +17,10 @@ sqoop list-databases --connect "jdbc:mysql://nn01.itversity.com:3306" --username
 #To CRUD operation on RDBMS with sqoop
 sqoop eval --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --query "select * from products limit 10"
 
-#import command to load RDBMS table to HDFS
+#import command to load RDBMS table to HDFS: It will treat the given location as parent directory of the table and load the files into the same directory.
 sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir "/user/vivekyadav/retail_db" 
 
-#Import the table data based on the tablename itself inside the directory
+#Import the table data based on the tablename itself inside the directory. It will create a new directory with the table name over the given directory.
 sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table customers --warehouse-dir "/user/vivekyadav/retail_db"
 
 #Import table with append --> Means data will append on the existing directory with table name and will not overwrite the existing content
@@ -52,7 +52,7 @@ OR
 >sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_import" --username retail_dba --password itversity --table order_items_vk --warehouse-dir "/user/vivekyadav/retail_db/retail_vk" --boundory-query "select min(order_item_id),max(order_item_id) from order_items_vk where order_item_id not in (1000000)"
 
 
-nd create target directory by using --delete-target-dir
+#create target directory by using --delete-target-dir
 >sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --table order_items --target-dir /user/vivekyadav/retail_db/order_items --delete-target-dir 
 
 #Create output files in zip format using -z or --compress
