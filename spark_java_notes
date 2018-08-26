@@ -1,3 +1,7 @@
+Launch Spark with version:
+# export SPARK_MAJOR_VERSION=2
+# spark-shell
+
 Initializing spark:
 -------------------
 > from pyspark import SparkContext, SparkConf
