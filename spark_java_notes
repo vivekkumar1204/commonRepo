@@ -17,6 +17,9 @@ Application run plan:
 5: Driver send the tasks to cluster manager as per data placement so it can run at appropriate executor.
 6: Before executor executions starts it register with Dirver , so driver can have holistic view of executors.
 
+Logical Plan: A logical plan describes computation on datasets without defining how to conduct the computation.
+Physical Plan: A physical plan describes computation on datasets with specific definitions on how to conduct the computation. A physical plan is executable.
+
 Application execution mode:
 ---------------------------
 Client:
@@ -57,7 +60,7 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 > Transformation : It creates new RDD by existing RDD using some logic. Basically it's' operation to create a RDD from other RDDs by using some logic.
 > Action return the result as per transformation i.e print the result etc.
 
-4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action datasets get called by RDDs.
+4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action performed datasets get called by RDDs.
 
 5: Spark Architecture:
 > Executor: The space in memory where put the data(RDDs, Dataframes) for execution.
@@ -72,6 +75,7 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 
 
 6: Spark Conf & Context:
+
 > Spark conf: Spark conf object holds the configuration properties of the application. Spark Conf stores the configuration parameters that spark driver will pass to spark context. Some of the parameters defines the properties of spark driver application and some of are used by spark to allocate resources on the cluster. 
 
 > Spark Context: It is heart of spark application. It acts as master of the spark application. Spark context allows driver application to access the cluster through resource manager. It's' used to create with help of sparkconf. 
@@ -101,10 +105,16 @@ Spark Context creates the job -> Job broaken into stages -> Stages are broken in
 > It returns a new RDD by passing through a function i.e if passing list then list will be returned with specified logic.
 > It produce an array to array.
 
+Note:A map is a transformation operation in Apache Spark. It applies to each element of RDD and it returns the result as new RDD. In the Map, operation developer can define his own custom business logic. The same logic will be applied to all the elements of RDD.
+Spark Map function takes one element as input process it according to custom code (specified by the developer) and returns one element at a time. Map transforms an RDD of length N into another RDD of length N. The input and output RDDs will typically have the same number of records.
+
 11: flatmap():
 > Takes an element and return 0 or more elements.
 > Returns a new RDD by passing through a function i.e if passing a list then output will be returned sequence of elements instead of list.
 > It flattens multiple arrays into single flatten array.
+
+Note: A flatMap is a transformation operation. It applies to each element of RDD and it returns the result as new RDD. It is similar to Map, but FlatMap allows returning 0, 1 or more elements from map function. In the FlatMap operation, a developer can define his own custom business logic. The same logic will be applied to all the elements of the RDD.
+A FlatMap function takes one element as input process it according to custom code (specified by the developer) and returns 0 or more element at a time. flatMap() transforms an RDD of length N into another RDD of length M.
 
 map() and flatMap() demonstration:
 ----------------------------------
@@ -254,6 +264,11 @@ top() --> If ordering is present in our RDD, then we can extract top elements fr
 fold() --> The signature of the fold() is like reduce(). Besides, it takes “zero value” as input, which is used for the initial call on each partition. But, the condition with zero value is that it should be the identity element of that operation. The key difference between fold() and reduce() is that, reduce() throws an exception for empty collection, but fold() is defined for empty collection.
 
 aggregate() --> It gives us the flexibility to get data type different from the input type. The aggregate() takes two functions to get the final result. Through one function we combine the element from our RDD with the accumulator, and the second, to combine the accumulator. Hence, in aggregate, we supply the initial zero value of the type which we want to return.
+
+Difference between Map and foreach:
+-----------------------------------
+foreach iterates over a list and applies some operation with side effects to each list member (such as saving each one to the database for example)
+map iterates over a list, transforms each member of that list, and returns another list of the same size with the transformed members (such as converting a list of strings to uppercase)
 
 Spark job execution mode:
 1: local
@@ -539,10 +554,65 @@ Output operations:
 > Example: print(), saveAsTextFile(), foreachRDD() etc.
 
   
+updateStateByKey Operations:
+> The updateStateByKey operation allows you to maintain arbitrary state while continuously updating it with new information. To use this, you will have to do two steps.
+  > Define the state - The state can be an arbitrary data type.
+  > Define the state update function - Specify with a function how to update the state using the previous state and the new values from an input stream.
 
+24/7 Operations: There are some special steps for 24/7 spark streaming.
+> Checkpointing: There are two types of data that are checkpointed.
+  > Metadata checkpointing: Saving of the information defining the streaming computation to fault-tolerant storage like HDFS. This is used to recover from failure of the node running the driver of the streaming application (discussed in detail later).
+  > Data Checkpointing: Saving of the generated RDDs to reliable storage. This is necessary in some stateful transformations that combine data across multiple batches. 
 
+Driver Fault Tolerance: 
+> Tolerating failures of the driver node requires a special way of creating our Streaming Context, which takes in the checkpoint directory. Instead of simply calling new StreamingContext, we need to use the StreamingContext.getOrCreate() function. 
 
+Worker Fault Tolerance: 
+> For failure of a worker node, Spark Streaming uses the same techniques as Spark for its fault tolerance.
+> All the data received from external sources is replicated among the Spark workers.
+> All RDDs created through transformations are also fault tolerant as they can be recreated either using Data Checkpointing or lineage graph.
 
+Receiver Fault Tolerance:
+> In such a failure, Spark Streaming restarts the failed receivers on other nodes in the cluster. However, whether it loses any of the received data depends on the nature of the source (whether the source can resend data or not) and the implementation of the receiver (whether it updates the source about received data or not).
+
+Zero Data Loss & Spark Consumers:
+> Reciever based approach: 
+In Apache Spark 1.2, preliminary support for write ahead logs (also known as journaling)  was added to Spark Streaming to improve this recovery mechanism and give stronger guarantees of zero data loss for more data sources. 
+> Pros:  
+WAL design could work with non-Kafka data sources
+
+>Cons: 
+Long running receivers make parallelism awkward and costly. It forces you to 
+create multiple DStreams to increase the throughput. 
+
+Achieving zero-data loss in the first approach required the data to be stored in a 
+Write Ahead Log, which further replicated the data. This is actually inefficient 
+as the data effectively gets replicated twice - once by Kafka, and a second time by the 
+Write Ahead Log. 
+
+Note: There is a small chance some records may get consumed twice under some failures. 
+
+> Direct Approach(No Receivers):
+  > It simply decides at the beginning of every batch interval what is the range of offsets to consume per partition. Later, when each batch’s jobs are executed, the data corresponding to the offset ranges is read from Kafka for processing
+  > Pros:  
+Spark partition 1:1 Kafka topic/partition, easy parallelism
+No duplicate writes
+No dependency on HDFS
+
+  > Cons: 
+Specific to Kafka
+Need adequate Kafka retention (OffsetOutOfRange is your fault)
+
+Note: That being said, if you use the Direct Stream approach, you have 2 options to avoid data losses:
+Using checkpoints
+Keeping track of the offsets that have been processed. 
+
+Kafka commands:
+./kafka-topics.sh --create --replication-factor 3 --partitions 13 --topic my-example-topic --zookeeper nn01.itversity.com:2181
+
+./kafka-topics.sh --list --zookeeper localhost:2181  
+
+./create-topic.sh
 
 --Execute sample program in cluster:
 nc -lk 9999
