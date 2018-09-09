@@ -560,7 +560,7 @@ insert into table college_trans values(1,'nec','nlr'),(2,'vit','vlr'),(3,'srm','
 Output:
 FAILED: SemanticException [Error 10302]: Updating values of bucketing columns is not supported.  Column clg_id.
 
---Update is possible in bucketed column
+--Update is possible in non bucketed column
 > update college_trans set clg_name = 'IIT' where clg_id = 7;
 output:
 5       stanford        uk

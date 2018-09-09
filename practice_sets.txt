@@ -32,6 +32,12 @@
 5: What is dataframe & Dataset, how they are co-related along with transformations and actions
 6: Optimization in spark
 
+#Data Structures
+
+
+#Algorithms
+
+
 Questions:
 Suppose we have a paragraph in English language. Write a java code (efficient) to count each word’s occurrence.
 Why is String class made immutable ? When should I make my own classes as immutable ?

@@ -1,9 +1,17 @@
+<<<<<<< HEAD
+=======
+Launch Spark with version:
+# export SPARK_MAJOR_VERSION=2
+# spark-shell
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Initializing spark:
 -------------------
 > from pyspark import SparkContext, SparkConf
 1: Create SparkConf that contains information about the application.
 > conf = SparkConf().setAppName("TestApp").setMaster(master)
 
+<<<<<<< HEAD
 What are the practical differences between Spark Standalone client deploy mode and cluster deploy mode? What are the pro's and con's of using each one?
 
 Let's try to look at the differences between client and cluster mode.
@@ -36,6 +44,8 @@ The way to choose which mode to run in is by using the --deploy-mode flag. From 
   ... # other options
   <application-jar> \
   [application-arguments]
+=======
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
   
 Application run plan:
 ---------------------
@@ -45,6 +55,12 @@ Application run plan:
 5: Driver send the tasks to cluster manager as per data placement so it can run at appropriate executor.
 6: Before executor executions starts it register with Dirver , so driver can have holistic view of executors.
 
+<<<<<<< HEAD
+=======
+Logical Plan: A logical plan describes computation on datasets without defining how to conduct the computation.
+Physical Plan: A physical plan describes computation on datasets with specific definitions on how to conduct the computation. A physical plan is executable.
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Application execution mode:
 ---------------------------
 Client:
@@ -85,7 +101,11 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 > Transformation : It creates new RDD by existing RDD using some logic. Basically it's' operation to create a RDD from other RDDs by using some logic.
 > Action return the result as per transformation i.e print the result etc.
 
+<<<<<<< HEAD
 4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action datasets get called by RDDs.
+=======
+4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action performed datasets get called by RDDs.
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 
 5: Spark Architecture:
 > Executor: The space in memory where put the data(RDDs, Dataframes) for execution.
@@ -100,6 +120,10 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 
 
 6: Spark Conf & Context:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 > Spark conf: Spark conf object holds the configuration properties of the application. Spark Conf stores the configuration parameters that spark driver will pass to spark context. Some of the parameters defines the properties of spark driver application and some of are used by spark to allocate resources on the cluster. 
 
 > Spark Context: It is heart of spark application. It acts as master of the spark application. Spark context allows driver application to access the cluster through resource manager. It's' used to create with help of sparkconf. 
@@ -129,11 +153,23 @@ Spark Context creates the job -> Job broaken into stages -> Stages are broken in
 > It returns a new RDD by passing through a function i.e if passing list then list will be returned with specified logic.
 > It produce an array to array.
 
+<<<<<<< HEAD
+=======
+Note:A map is a transformation operation in Apache Spark. It applies to each element of RDD and it returns the result as new RDD. In the Map, operation developer can define his own custom business logic. The same logic will be applied to all the elements of RDD.
+Spark Map function takes one element as input process it according to custom code (specified by the developer) and returns one element at a time. Map transforms an RDD of length N into another RDD of length N. The input and output RDDs will typically have the same number of records.
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 11: flatmap():
 > Takes an element and return 0 or more elements.
 > Returns a new RDD by passing through a function i.e if passing a list then output will be returned sequence of elements instead of list.
 > It flattens multiple arrays into single flatten array.
 
+<<<<<<< HEAD
+=======
+Note: A flatMap is a transformation operation. It applies to each element of RDD and it returns the result as new RDD. It is similar to Map, but FlatMap allows returning 0, 1 or more elements from map function. In the FlatMap operation, a developer can define his own custom business logic. The same logic will be applied to all the elements of the RDD.
+A FlatMap function takes one element as input process it according to custom code (specified by the developer) and returns 0 or more element at a time. flatMap() transforms an RDD of length N into another RDD of length M.
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 map() and flatMap() demonstration:
 ----------------------------------
 >>> gtRDD = sc.textFile("file:///home/impetus/Desktop/spark_home/input/greetings.txt")
@@ -283,6 +319,14 @@ fold() --> The signature of the fold() is like reduce(). Besides, it takes “ze
 
 aggregate() --> It gives us the flexibility to get data type different from the input type. The aggregate() takes two functions to get the final result. Through one function we combine the element from our RDD with the accumulator, and the second, to combine the accumulator. Hence, in aggregate, we supply the initial zero value of the type which we want to return.
 
+<<<<<<< HEAD
+=======
+Difference between Map and foreach:
+-----------------------------------
+foreach iterates over a list and applies some operation with side effects to each list member (such as saving each one to the database for example)
+map iterates over a list, transforms each member of that list, and returns another list of the same size with the transformed members (such as converting a list of strings to uppercase)
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Spark job execution mode:
 1: local
 --------
@@ -393,6 +437,10 @@ DataFrames & DatSets:
 > Running the Spark SQL CLI
 -----------------------------------------------------------
 Note: We can create DF&DS from existing RDD, Hive tables, external sources.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 DataFrame: It is a distributed collection of data organized into named columns.It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood. DataFrames can be constructed from a wide array of sources such as: structured data files, tables in Hive, external databases, or existing RDDs.
 
 DatSet: A Dataset is a distributed collection of data. Dataset is a new interface added in Spark 1.6 that provides the benefits of RDDs (strong typing, ability to use powerful lambda functions) with the benefits of Spark SQL’s optimized execution engine. A Dataset can be constructed from JVM objects and then manipulated using functional transformations (map, flatMap, filter, etc.).
@@ -441,6 +489,203 @@ Rules: We can manipulate tree using rules.
 
 > 2: Cost based optimization 
 
+<<<<<<< HEAD
+=======
+Performance tuning:
+-------------------
+> Spark SQL can cache table by using an in-memory columnar format by calling spark.catalog.cacheTable("tableName") or dataframe.cache(). Then Spark SQL will scan only required columns and will automatically tune compression to minimize memory usage and GC pressure.
+Some properties:
+spark.sql.inMemoryColumnarStorage.compressed = true
+spark.sql.inMemoryColumnarStorage.batchSize = 10000
+	
+Four step update strategy with spark:
+-------------------------------------
+
+--# Hie update: 4 step update strategy
+> Base table
+
+--1: ingest data
+drop table if exists base_tbl;
+create table base_tbl(id int, field1 string, field2 string, modified_date string) row format delimited fields terminated by ',';
+--Data:
+insert into table base_tbl values(1, 'abcdef', 'efgh', '2014-03-01 09:22:52'),
+(2, 'abc', 'efgh', '2014-03-01 09:22:52'),
+(3, 'abcde', 'efgh', '2014-02-01 09:22:52');
+
+drop table if exists inc_tbl;
+create table inc_tbl(id int, field1 string, field2 string, modified_date string) row format delimited fields terminated by ',';
+--Data:
+
+insert into table inc_tbl values(1, 'abcdef', 'efgh', '2014-04-01 09:22:52'),
+(2, 'abc', 'efgh', '2014-04-01 09:22:52'),
+(3, 'abcde', 'e', '2014-03-01 10:22:52'),
+(4, 'ab', 'ef', '2014-04-01 09:22:52'),
+(5, 'abd', 'gh', '2014-05-01 09:22:52');
+
+
+--2: Create Reconcile View
+drop view if exists reconcile_view;
+create view reconcile_view as
+select t1.* from 
+(select * from base_tbl
+union all
+select * from inc_tbl) t1
+join
+(select id, max(modified_date) max_modified from 
+(select * from base_tbl
+union all
+select * from inc_tbl) t2
+group by id)s
+on t1.id == s.id 
+and t1.modified_date = s.max_modified;
+
+--3: Compact the view data into table
+drop table if exists compact_tbl;
+create table compact_tbl as
+select * from reconcile_view;
+
+--4: Purge the records into base table
+drop table if exists base_tbl;
+create table base_tbl as
+select * from compact_tbl;
+
+
+************************************************Spark Streaming***********************************************************
+Spark Streaming: 
+> Spark Streaming is an extension of the core Spark API that enables scalable,  high-throughput, fault-tolerant stream processing of live data streams.
+> Structured Streaming is a scalable and fault-tolerant stream processing engine built on the Spark SQL engine.
+> Structured Streaming provides fast, scalable, fault-tolerant, end-to-end exactly-once stream processing without the user having to reason about streaming.
+> Internally, by default, Structured Streaming queries are processed using a micro-batch processing engine, which processes data streams as a series of small batch jobs thereby achieving end-to-end latencies as low as 100 milliseconds and exactly-once fault-tolerance guarantees.
+> However, since Spark 2.3, we have introduced a new low-latency processing mode called Continuous Processing, which can achieve end-to-end latencies as low as 1 millisecond with at-least-once guarantees.
+> Instead of processing the streaming data one record at a time, Spark Streaming discretizes the streaming data into tiny, sub-second micro-batches.
+
+
+Stream Processing Architecture - Micro Batching:
+> Spark Streaming uses a “micro-batch” architecture, where the streaming computation is treated as a continuous series of batch computations on small batches of data.
+> New batches are created at regular time intervals. The size of the time interval is called “Batch Interval”
+> Each input batch forms an RDD, and is processed using Spark jobs to create
+ other RDDs.
+> Recieve: Recieve streaming data from several resources e.g live logs, system telemetry data, IOT devices data etc.
+> Process: Process the parallel on cluster.
+> Output: Output the results out to downstream systems like HBase, Casandra, Cafka etc.
+> Streaming computation is treated as continuous series of batch computations on small batches of data.
+> New batches are created at regular time intervals. The size of interval called Batch Interval.
+> Each input batch forms an RDD, and is processed using spark jobs to create other RDDs.
+
+Dynamic load balancing:
+> Traditional system: Unevenly partitioned streams, bottleneck node, static scheduling  of continuous operators to nodes can cause bottlenecks.
+> Spark streaming: Tasks scheduled based on the available resources, dynamic scheduling of tasks ensures even distribution of load.
+> Spark tasks are assigned dynamically to the workers based on the locality of the data and available resources.
+
+Discretized Streams(DStreams):
+> Spark DStream (Discretized Stream) is the basic abstraction of Spark Streaming. DStream is a continuous stream of data. It receives input from various sources like Kafka, Flume, Kinesis, or TCP sockets. It can also be a data stream generated by transforming the input stream.
+> DStream is the sequence of data arriving over time.
+> Internally, each DStream is represented as a sequence of RDDs arriving at each time step.
+
+Fast failure and straggler recovery:
+> Traditional system: failed stream replayed to new node, slower recovery by using single node for recomputation.
+> Spark streaming: Failed tasks are relaunched on all other nodes, faster recovery using multiple node for recomputation.
+> In Spark, the computation is already discretized into small, deterministic tasks that can run anywhere without affecting correctness.
+
+Discretized streams:
+> Discretized Stream or DStream is the basic abstraction provided by Spark Streaming.
+> A DStream is a sequence of data arriving over time.
+> Internally, each DStream is represented as a sequence of RDDs arriving at each time
+  step (hence the name “Discretized”).
+> DStreams can be created from various input sources such as Flume, Kafka, or HDFS.
+
+Transformations & Output Operations:
+> Once DStream built, it offers two types of operations:
+ > Transformations
+ > Output operations
+> DStreams provide many of the same operations available on RDDs, plus new operations related to time, such as sliding windows.
+
+Transformations:
+> Transformations on DStreams can be grouped into either Stateless or Stateful:
+ > Stateless Transformations:
+  > Simple RDD transformations being applied on every batch—that is, every RDD in a Dstream, for example – map, filter, reduceByKey, flatMap etc.
+
+ > Stateful Transformations:
+  > Stateful transformations are operations on DStreams that track data across time; that is, some data from previous batches is used to generate the results for a new batch.
+  > The two main types are:
+   > 1- Windowed operations: which act over a sliding window of time periods. Ex: window(), countByWindow(), reduceByWindow(), reduceByKeyandWindow(), countByValueAndWindow()
+   > 2- updateStateByKey(): which is used to track state across events for each key.
+ 
+Output operations:
+> Output operations specify what needs to be done with the final transformed data in a stream (e.g., pushing it to an external database or printing it to the screen). 
+> Example: print(), saveAsTextFile(), foreachRDD() etc.
+
+  
+updateStateByKey Operations:
+> The updateStateByKey operation allows you to maintain arbitrary state while continuously updating it with new information. To use this, you will have to do two steps.
+  > Define the state - The state can be an arbitrary data type.
+  > Define the state update function - Specify with a function how to update the state using the previous state and the new values from an input stream.
+
+24/7 Operations: There are some special steps for 24/7 spark streaming.
+> Checkpointing: There are two types of data that are checkpointed.
+  > Metadata checkpointing: Saving of the information defining the streaming computation to fault-tolerant storage like HDFS. This is used to recover from failure of the node running the driver of the streaming application (discussed in detail later).
+  > Data Checkpointing: Saving of the generated RDDs to reliable storage. This is necessary in some stateful transformations that combine data across multiple batches. 
+
+Driver Fault Tolerance: 
+> Tolerating failures of the driver node requires a special way of creating our Streaming Context, which takes in the checkpoint directory. Instead of simply calling new StreamingContext, we need to use the StreamingContext.getOrCreate() function. 
+
+Worker Fault Tolerance: 
+> For failure of a worker node, Spark Streaming uses the same techniques as Spark for its fault tolerance.
+> All the data received from external sources is replicated among the Spark workers.
+> All RDDs created through transformations are also fault tolerant as they can be recreated either using Data Checkpointing or lineage graph.
+
+Receiver Fault Tolerance:
+> In such a failure, Spark Streaming restarts the failed receivers on other nodes in the cluster. However, whether it loses any of the received data depends on the nature of the source (whether the source can resend data or not) and the implementation of the receiver (whether it updates the source about received data or not).
+
+Zero Data Loss & Spark Consumers:
+> Reciever based approach: 
+In Apache Spark 1.2, preliminary support for write ahead logs (also known as journaling)  was added to Spark Streaming to improve this recovery mechanism and give stronger guarantees of zero data loss for more data sources. 
+> Pros:  
+WAL design could work with non-Kafka data sources
+
+>Cons: 
+Long running receivers make parallelism awkward and costly. It forces you to 
+create multiple DStreams to increase the throughput. 
+
+Achieving zero-data loss in the first approach required the data to be stored in a 
+Write Ahead Log, which further replicated the data. This is actually inefficient 
+as the data effectively gets replicated twice - once by Kafka, and a second time by the 
+Write Ahead Log. 
+
+Note: There is a small chance some records may get consumed twice under some failures. 
+
+> Direct Approach(No Receivers):
+  > It simply decides at the beginning of every batch interval what is the range of offsets to consume per partition. Later, when each batch’s jobs are executed, the data corresponding to the offset ranges is read from Kafka for processing
+  > Pros:  
+Spark partition 1:1 Kafka topic/partition, easy parallelism
+No duplicate writes
+No dependency on HDFS
+
+  > Cons: 
+Specific to Kafka
+Need adequate Kafka retention (OffsetOutOfRange is your fault)
+
+Note: That being said, if you use the Direct Stream approach, you have 2 options to avoid data losses:
+Using checkpoints
+Keeping track of the offsets that have been processed. 
+
+Kafka commands:
+./kafka-topics.sh --create --replication-factor 3 --partitions 13 --topic my-example-topic --zookeeper nn01.itversity.com:2181
+
+./kafka-topics.sh --list --zookeeper localhost:2181  
+
+./create-topic.sh
+
+--Execute sample program in cluster:
+nc -lk 9999
+spark-submit --class streaming_unix.StreamingWordCount --master local --conf spark.ui.port=4444 /home/ubuntu/vivek/jars/newspark-0.0.1-SNAPSHOT.jar
+
+spark-submit --class streaming_unix.WordCountWithWindow --master local --conf spark.ui.port=4444 /home/ubuntu/vivek/jars/newspark-0.0.1-SNAPSHOT.jar
+
+C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.SparkTransformationExamples --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
+/newspark/src/main/java/streaming_unix/StreamingWordCount.java
+**************************************************************************************************************************
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 
 Examples Chapter 1&2: 
 ---------------------
@@ -605,3 +850,9 @@ yarn logs -applicationId application_1473860344791_0001
 
 #Command to run in windows
 C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.SparkTransformationExamples --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
+<<<<<<< HEAD
+=======
+
+
+C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.WordCountWithWindow --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
+>>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
