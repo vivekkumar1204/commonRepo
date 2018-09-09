@@ -1,3 +1,9 @@
+Book meter: 46
+
+Hadoop Basics:
+--------------
+
+
 
 Hadoop submit commands:
 -----------------------
