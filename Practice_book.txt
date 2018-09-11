@@ -1,3 +1,11 @@
+Commom Schedule:
+----------------
+Hadoop Definitive guide --> Continue from page 46
+Hive --> Hive Essentials
+Spark --> Going through with Saprk Definitive gude
+Python --> Go through with TutorialsPoint
+Java --> Go through with JavaConceptOfTheDay
+
 Schedule for learning materialL
 ********************************************************Spark with Scala(2:00 hrs)************************************************************
 Itversity playlist(Spark with scala) 
