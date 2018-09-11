@@ -1,8 +1,8 @@
 Commom Schedule:
 ----------------
-Hadoop Definitive guide --> Continue from page 46
+Hadoop Definitive guide --> Continue from page 49(A Test Run)
 Hive --> Hive Essentials
-Spark --> Going through with Saprk Definitive gude
+Spark --> Continue from Chapter-5(COLUMNS AS EXPRESSIONS)
 Python --> Go through with TutorialsPoint
 Java --> Go through with JavaConceptOfTheDay
 
