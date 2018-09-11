@@ -1,51 +1,13 @@
-<<<<<<< HEAD
-=======
 Launch Spark with version:
 # export SPARK_MAJOR_VERSION=2
 # spark-shell
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Initializing spark:
 -------------------
 > from pyspark import SparkContext, SparkConf
 1: Create SparkConf that contains information about the application.
 > conf = SparkConf().setAppName("TestApp").setMaster(master)
 
-<<<<<<< HEAD
-What are the practical differences between Spark Standalone client deploy mode and cluster deploy mode? What are the pro's and con's of using each one?
-
-Let's try to look at the differences between client and cluster mode.
-
-Client:
-
-Driver runs on a dedicated server (Master node) inside a dedicated process. This means it has all available resources at it's disposal to execute work.
-Driver opens up a dedicated Netty HTTP server and distributes the JAR files specified to all Worker nodes (big advantage).
-Because the Master node has dedicated resources of it's own, you don't need to "spend" worker resources for the Driver program.
-If the driver process dies, you need an external monitoring system to reset it's execution.
-
-Cluster:
-
-Driver runs on one of the cluster's Worker nodes. The worker is chosen by the Master leader
-Driver runs as a dedicated, standalone process inside the Worker.
-Driver programs takes up at least 1 core and a dedicated amount of memory from one of the workers (this can be configured).
-Driver program can be monitored from the Master node using the --supervise flag and be reset in case it dies.
-When working in Cluster mode, all JARs related to the execution of your application need to be publicly available to all the workers. This means you can either manually place them in a shared place or in a folder for each of the workers.
-Which one is better? Not sure, that's actually for you to experiment and decide. This is no better decision here, you gain things from the former and latter, it's up to you to see which one works better for your use-case.
-
-How to I choose which one my application is going to be running on, using spark-submit
-
-The way to choose which mode to run in is by using the --deploy-mode flag. From the Spark Configuration page:
-
-/bin/spark-submit \
-  --class <main-class>
-  --master <master-url> \
-  --deploy-mode <deploy-mode> \
-  --conf <key>=<value> \
-  ... # other options
-  <application-jar> \
-  [application-arguments]
-=======
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
   
 Application run plan:
 ---------------------
@@ -55,12 +17,9 @@ Application run plan:
 5: Driver send the tasks to cluster manager as per data placement so it can run at appropriate executor.
 6: Before executor executions starts it register with Dirver , so driver can have holistic view of executors.
 
-<<<<<<< HEAD
-=======
 Logical Plan: A logical plan describes computation on datasets without defining how to conduct the computation.
 Physical Plan: A physical plan describes computation on datasets with specific definitions on how to conduct the computation. A physical plan is executable.
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Application execution mode:
 ---------------------------
 Client:
@@ -101,11 +60,7 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 > Transformation : It creates new RDD by existing RDD using some logic. Basically it's' operation to create a RDD from other RDDs by using some logic.
 > Action return the result as per transformation i.e print the result etc.
 
-<<<<<<< HEAD
-4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action datasets get called by RDDs.
-=======
 4: Lazy Evaluation: Till we are not performing any action, data will not be available to RDDs, it will resides only on disk. So while action performed datasets get called by RDDs.
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 
 5: Spark Architecture:
 > Executor: The space in memory where put the data(RDDs, Dataframes) for execution.
@@ -120,10 +75,7 @@ Which one is better? Not sure, that's actually for you to experiment and decide.
 
 
 6: Spark Conf & Context:
-<<<<<<< HEAD
-=======
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 > Spark conf: Spark conf object holds the configuration properties of the application. Spark Conf stores the configuration parameters that spark driver will pass to spark context. Some of the parameters defines the properties of spark driver application and some of are used by spark to allocate resources on the cluster. 
 
 > Spark Context: It is heart of spark application. It acts as master of the spark application. Spark context allows driver application to access the cluster through resource manager. It's' used to create with help of sparkconf. 
@@ -153,23 +105,17 @@ Spark Context creates the job -> Job broaken into stages -> Stages are broken in
 > It returns a new RDD by passing through a function i.e if passing list then list will be returned with specified logic.
 > It produce an array to array.
 
-<<<<<<< HEAD
-=======
 Note:A map is a transformation operation in Apache Spark. It applies to each element of RDD and it returns the result as new RDD. In the Map, operation developer can define his own custom business logic. The same logic will be applied to all the elements of RDD.
 Spark Map function takes one element as input process it according to custom code (specified by the developer) and returns one element at a time. Map transforms an RDD of length N into another RDD of length N. The input and output RDDs will typically have the same number of records.
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 11: flatmap():
 > Takes an element and return 0 or more elements.
 > Returns a new RDD by passing through a function i.e if passing a list then output will be returned sequence of elements instead of list.
 > It flattens multiple arrays into single flatten array.
 
-<<<<<<< HEAD
-=======
 Note: A flatMap is a transformation operation. It applies to each element of RDD and it returns the result as new RDD. It is similar to Map, but FlatMap allows returning 0, 1 or more elements from map function. In the FlatMap operation, a developer can define his own custom business logic. The same logic will be applied to all the elements of the RDD.
 A FlatMap function takes one element as input process it according to custom code (specified by the developer) and returns 0 or more element at a time. flatMap() transforms an RDD of length N into another RDD of length M.
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 map() and flatMap() demonstration:
 ----------------------------------
 >>> gtRDD = sc.textFile("file:///home/impetus/Desktop/spark_home/input/greetings.txt")
@@ -319,14 +265,11 @@ fold() --> The signature of the fold() is like reduce(). Besides, it takes “ze
 
 aggregate() --> It gives us the flexibility to get data type different from the input type. The aggregate() takes two functions to get the final result. Through one function we combine the element from our RDD with the accumulator, and the second, to combine the accumulator. Hence, in aggregate, we supply the initial zero value of the type which we want to return.
 
-<<<<<<< HEAD
-=======
 Difference between Map and foreach:
 -----------------------------------
 foreach iterates over a list and applies some operation with side effects to each list member (such as saving each one to the database for example)
 map iterates over a list, transforms each member of that list, and returns another list of the same size with the transformed members (such as converting a list of strings to uppercase)
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 Spark job execution mode:
 1: local
 --------
@@ -437,10 +380,7 @@ DataFrames & DatSets:
 > Running the Spark SQL CLI
 -----------------------------------------------------------
 Note: We can create DF&DS from existing RDD, Hive tables, external sources.
-<<<<<<< HEAD
-=======
 
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 DataFrame: It is a distributed collection of data organized into named columns.It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood. DataFrames can be constructed from a wide array of sources such as: structured data files, tables in Hive, external databases, or existing RDDs.
 
 DatSet: A Dataset is a distributed collection of data. Dataset is a new interface added in Spark 1.6 that provides the benefits of RDDs (strong typing, ability to use powerful lambda functions) with the benefits of Spark SQL’s optimized execution engine. A Dataset can be constructed from JVM objects and then manipulated using functional transformations (map, flatMap, filter, etc.).
@@ -489,8 +429,6 @@ Rules: We can manipulate tree using rules.
 
 > 2: Cost based optimization 
 
-<<<<<<< HEAD
-=======
 Performance tuning:
 -------------------
 > Spark SQL can cache table by using an in-memory columnar format by calling spark.catalog.cacheTable("tableName") or dataframe.cache(). Then Spark SQL will scan only required columns and will automatically tune compression to minimize memory usage and GC pressure.
@@ -685,7 +623,6 @@ spark-submit --class streaming_unix.WordCountWithWindow --master local --conf sp
 C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.SparkTransformationExamples --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
 /newspark/src/main/java/streaming_unix/StreamingWordCount.java
 **************************************************************************************************************************
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
 
 Examples Chapter 1&2: 
 ---------------------
@@ -850,9 +787,6 @@ yarn logs -applicationId application_1473860344791_0001
 
 #Command to run in windows
 C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.SparkTransformationExamples --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
-<<<<<<< HEAD
-=======
 
 
 C:\Users\Public\spark\bin\spark-submit --class sparkrddexamples.WordCountWithWindow --master local --conf spark.ui.port=4444 java_spark-0.0.1-SNAPSHOT.jar
->>>>>>> 0f4549b063e7ead98ab7b9a1fa750498cf2e0a12
