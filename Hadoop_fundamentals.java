@@ -3,6 +3,20 @@ Book meter: 46
 Hadoop Basics:
 --------------
 
+Data Flow:
+> MapReduce jobs split into map and reduce tasks and run over the cluster in different nodes as parallel computing.
+> Number of mappers run as equal number of input splits.
+> mapper task can run on local node where data resides or in other node so in that case data will travel through network for computation.
+> Map tasks try to execute as per data locality feature.
+> Map output is intermediate output of job and it stores in local file system of node not in HDFS, if that node get failed so schedular will rerun the same mapper in different node to recumpute the data and will consumed by the reducer.
+> All mappers output get merged and shuffle to reducer.
+> Reducer consume the intermediate output from mapper and process then store out into HDFS,
+> Reducer stores 1 replica of output in local node and others in off-rack nodes. Thats the reason it consume network bandwidth to write the job output data.
+> Number of reduce tasks is not governed by size of input. We can set it in job configuration.
+
+Combiner Function:
+> 
+
 
 
 Hadoop submit commands:
