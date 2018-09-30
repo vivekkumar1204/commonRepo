@@ -6,6 +6,13 @@ Spark --> Continue from Chapter-5(COLUMNS AS EXPRESSIONS)
 Python --> Go through with TutorialsPoint(Continue)
 Java --> Go through with JavaConceptOfTheDay
 
+Daily Schedule:
+Monday: Hadoop/MapReduce/Hive
+Tuesday: Spark(pyspark)/Kafka/Flume
+Wednesday: Java
+Thursday: Unix
+Friday: HBase
+
 Schedule for learning materialL
 ********************************************************Spark with Scala(2:00 hrs)************************************************************
 Itversity playlist(Spark with scala) 
