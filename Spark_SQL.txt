@@ -173,3 +173,39 @@ select * from reconcile_view;
 drop table if exists base_tbl;
 create table base_tbl as
 select * from compact_tbl;
+
+***************************************Spark: The Definitive Guide**************************************
+Basic Structured Operations:
+----------------------------
+#Columns As Expression:
+> expr("somecol - 5") is same as col("somecol") - 5 or expr("somecol") - 5
+> Columns are just expressions.
+> Columns and transformation of those columns compile to the same logical plan as parsed exprtession.
+> Ex: expr("(((somecol + 5)*200)-6)")
+
+#Access DF Columns
+> spark.read.format("json").load("/data/flight-data/json_file_name").columns
+
+#Dataframe Transformations
+> We can add/remove Row or Column
+> We can transform row into column or viceversa
+> We can change the order of rows based on the values in columns
+> Creating dataframe:
+df = spark.read.format("json").load("C:\\Users\\vivek.kumar\\Desktop\\Project\\DataSets\\spark\\flight\\2015-summary.json")
+df.createOrReplaceTempView("dfTable")
+> We can create dataframe on the fly by taking a set of rows and converting them as dataframe
+myManualSchema = StringType([StructField("some",StringType(),True),StructField("col",StringType(),True),StructField("names",LongType(),False)])
+myRow = Row("Hello",None,1)
+myDF = spark.createDataFrame([myRow], myManualSchema)
+myDF.show() 
+
+#select and selectExpr
+> df.select("col1","col2").show(2)
+  df.select(expr("col1 as column1")).show()
+
+> selectExpr() is the most convenient way to perform transformation
+df.selectExpr("DEST_COUNTRY_NAME as destination","ORIGIN_COUNTRY_NAME as origin","count").show(5)
+
+> Expression(adding a new column) instead of all DF columns
+df.selectExpr("*","(DEST_COUNTRY_NAME=ORIGIN_COUNTRY_NAME) as withInCountry").show(5)
+  

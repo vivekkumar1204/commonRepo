@@ -2,7 +2,7 @@ Commom Schedule:
 ----------------
 Hadoop Definitive guide --> Continue from page 55(Combiner function)
 Hive --> Hive Essentials
-Spark --> Continue from Chapter-5(COLUMNS AS EXPRESSIONS)
+Spark --> Continue from Chapter-5(Converting to Spark Types (Literals))
 Python --> Go through with TutorialsPoint(Continue)
 Java --> Go through with JavaConceptOfTheDay
 
@@ -10,7 +10,7 @@ Daily Schedule:
 Monday: Hadoop/MapReduce/Hive/HBase
 Tuesday: Spark(pyspark)/Kafka/Flume
 Wednesday: Java
-Thursday: Unix
+Thursday: Unix/Sqoop
 Friday: DS/ALgo from Book
 
 Schedule for learning materialL
