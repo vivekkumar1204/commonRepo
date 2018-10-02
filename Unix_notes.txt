@@ -62,3 +62,26 @@
 16: date formats
 > date '+%Y%m%s%H%M%S' -->20171212200150
 
+#Frequently used 50 commands : https://www.thegeekstuff.com/2010/11/50-linux-commands/?utm_source=feedburner
+1: tar command
+Create a new tar archive given directory
+> tar cvf file.tar dir_name
+
+Extract from an existing tar archive
+> tar xvf tar_file.tar
+
+View an existing tar archive
+> tar tvf tar_file.tar
+
+2: grep command
+Search for a given string in a file
+> grep -i "string to search" file_name
+
+Print matched lines, along with the three lines after itversity
+> grep -A 3 -i "string" file_name
+
+Search for a string in all files recursively
+> grep -r "string" *
+
+3: find command
+
