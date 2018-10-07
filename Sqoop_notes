@@ -84,6 +84,43 @@ OR
 OR
 we can use --where clause with append 
 
+-----------------------------Incremental import to hive using sqoop-----------------------------
+> We can use sqoop incremental import command with "-merge-key" option for updating the records in an already imported hive tables.
+    # sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306/employee_db" --username employee_dba --password --itversity
+    --incremental lastmodified --merge-key employee_id
+    --check-column emp_timestamp
+    --target-dir /sqoop/emp_data
+
+    > --incremental-lastmodified will import the updated and new records from RDBMS(MySql) database based on last latest value of emp_timestamp in hive.
+    > --merge-key employee_id will flatten two datasets  into one , taking newest available records for each primary key (employee_id).
+    > Example: Let’s assume there 500k records are there in Hive table. In incremental load, we got 100k new employee records and 50k records are updated employee records.
+    Above sqoop command will import 150K records and using Merge tool it will append new records (100k) and update the 50k records based on primary key (employee_id).
+    
+--Acadguild approach
+Step1: data in mysql table: employee
+id,name,sal
+1, a, 1000
+2, b, 2000
+3, c, 3000
+
+sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306?emp_db" --username user --password pass --table employee --target-dir /home/emp_dir
+
+Step2: Insert few more records into same table
+id,name,sal
+1, a, 1000
+2, b, 2000
+3, c, 3000
+4, d, 4000
+5, e, 5000
+6, f, 6000
+
+sqoop import --connect "jdbc:mysql://nn01.itversity.com:3306?emp_db" --username user --password pass --table employee --target-dir /home/emp_dir
+--incremental append --check-column id --last-value 3
+
+
+        
+-------------------------------------------------------------------------------------------------
+
 #Import all tables by using --import-all-tables
 >sqoop import-all-tables --connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" --username retail_dba --password itversity --warehouse-dir "/user/vivekyadav/import_all_tables" --exclude-tables "departments,categories" --as-avrodatafile
 

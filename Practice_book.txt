@@ -1,8 +1,8 @@
 Commom Schedule:
 ----------------
-Hadoop Definitive guide --> Continue from page 55(Combiner function)
+Hadoop Definitive guide --> Chapter-3(Block Caching, page 68)
 Hive --> Hive Essentials
-Spark --> Continue from Chapter-5(Converting to Spark Types (Literals))
+Spark --> Start from Chapter-6
 Python --> Go through with TutorialsPoint(Continue)
 Java --> Go through with JavaConceptOfTheDay
 

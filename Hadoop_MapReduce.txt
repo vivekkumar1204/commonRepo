@@ -14,9 +14,44 @@ Data Flow:
 > Number of reduce tasks is not governed by size of input. We can set it in job configuration.
 
 Combiner Function:
-> 
+> Combiner function minimize the data transfer between map and reduce.
+> It helps to maintain data transfer rate even when bandwidth is low.
+Example: To calculate maximum temperature.
+Map1 produced the output as :
+(1950,0)
+(1950,20)
+(1950,10)
+Map2 produced as:
+(1950,25)
+(1950,10)
 
+Combiner will take both output and will apply the intermediate function:
+Map1: (1950,20)
+Map2: (1950,25)
 
+And then this output will be sent to Reducer for final operation
+Reducer : (1950,25)
+> In case of mean calculation we can not use this function.
+> Combiner behaves like mini-reducer.
+> It can help to cut down the data to shuffle between mappers and reducers.
+
+3: HDFS(Hadoop Distributed File System):
+    Blocks:
+    > Block size is the minimum amount of data that it can read or write.
+    > Files in HDFS are broken into block-sized chunks which are stored as a independent units.
+    > HDFS block size is large compared to disk block size due to minimize the cost of seeks.
+    > Blocks are fit with replication for providing the fault tolerance and availability.
+    > HDFS's fsck command understand to blocks i.e hdfs fsck / -files -blocks
+    
+    NameNode & Datanode:
+    > Namenode manages the filesystem namespace, it maintains the filesystem tree and the metadata for all the files & directories in the tree. This information is stored persistentaly on the local disk in the form of two files: the namespace image and the edit log. It also knows the datanodes on which all the blocks for a given file are located.
+    > A client access the filesystem on behalf of user by communicating with namenode & datanodes.
+    > To make the namenode persistent perform several tasks like data backup, secondary namenode.
+    > Secondary namenode help to periodically merge namespace image with edit log.
+    > Secondary namenode keep a copy of merged namespace, which can be used in cas eof namenode failure.
+    
+    Block Caching:
+    > 
 ****************************************************Hadoop/HDFS Commands************************************************
 33 Frequently used HDFS shell commands
 

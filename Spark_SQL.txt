@@ -186,7 +186,7 @@ Basic Structured Operations:
 #Access DF Columns
 > spark.read.format("json").load("/data/flight-data/json_file_name").columns
 
-#Dataframe Transformations
+#Dataframe Transformations:
 > We can add/remove Row or Column
 > We can transform row into column or viceversa
 > We can change the order of rows based on the values in columns
@@ -199,7 +199,7 @@ myRow = Row("Hello",None,1)
 myDF = spark.createDataFrame([myRow], myManualSchema)
 myDF.show() 
 
-#select and selectExpr
+#select and selectExpr:
 > df.select("col1","col2").show(2)
   df.select(expr("col1 as column1")).show()
 
@@ -209,3 +209,91 @@ df.selectExpr("DEST_COUNTRY_NAME as destination","ORIGIN_COUNTRY_NAME as origin"
 > Expression(adding a new column) instead of all DF columns
 df.selectExpr("*","(DEST_COUNTRY_NAME=ORIGIN_COUNTRY_NAME) as withInCountry").show(5)
   
+#Converting to Spark Types (Literals): we need to pass explicit values into Spark that are just a value (rather than a new column).
+from pyspark.sql.functions import lit
+df.select(expr("*"),lit(1).alias("one")).show(2)
+
+#Adding Columns: There’s also a more formal way of adding a new column to a DataFrame, and that’s by using the withColumnmethod on our DataFrame.
+df.withColumn("numberOne", lit(1)).show()
+df.withColumn("withInColumn", expr("org_country == dest_country")).show(2)
+
+#Renaming columns: This will rename the column with the name of the string in the first argument to the string in the second argument.
+df.withColumnRenamed("dest_country", "dest").columns
+
+#Case sensitivity: By default Spark is case insensitive; however, you can make Spark case sensitive by setting the configuration.
+-- in SQL set spark.sql.caseSensitive true
+
+#Removing Columns;
+df.drop("dest_country").columns
+> We can drop multiple columns by passing in multiple columns as arguments: 
+df.drop("ORIGIN_COUNTRY_NAME", "DEST_COUNTRY_NAME")
+
+#Changing a Column's Type(cast):
+df.withColumn("longCount", col("count").cast("long"))
+
+#Filtering Rows: There are two methods to perform this operation: you can use where or filter and they both will perform the same operation and accept the same argument types when used with DataFrames.
+df.where("count < 2").show()
+> Perform multiple conditions
+df.where(col("count") < 2).where(col("org_dest") != "Croatia").show()
+
+#Getting unique Rows: 
+df.select("org_country","dest_country").distinct().count() -- Multiple columns as distinct selection
+df.select("org_country").distinct().count() -- select count(distinct org_country) from tbl.
+
+#Random Samples: Sometimes, you might just want to sample some random records from your DataFrame.
+seed = 5 
+withReplacement = False 
+fraction = 0.5 
+df.sample(withReplacement, fraction, seed).count()
+
+#Random splits: Random splits can be helpful when you need to break up your DataFrame into a random “splits” of the original DataFrame. This is often used with machine learning algorithms to create training, validation, and test sets. In this next example, we’ll split our DataFrame into two different DataFrames by setting the weights by which we will split the DataFrame (these are the arguments to the function).
+
+dataFrames = df.randomSplit([0.25, 0.75], seed) 
+dataFrames[0].count() > dataFrames[1].count() # False
+
+#Concatenating and Appending Rows (Union): To union two DataFrames, you must be sure that they have the same schema and number of columns; otherwise, the union will fail.
+from pyspark.sql import Row 
+schema = df.schema newRows = [ Row("New Country", "Other Country", 5L), Row("New Country 2", "Other Country 3", 1L) ] 
+parallelizedRows = spark.sparkContext.parallelize(newRows) 
+newDF = spark.createDataFrame(parallelizedRows, schema) 
+df.union(newDF).where("count = 1").where(col("ORIGIN_COUNTRY_NAME") != "United States").show()
+
+#Sorting Rows: When we sort the values in a DataFrame, we always want to sort with either the largest or smallest values at the top of a DataFrame. There are two equivalent operations to do this sort and orderBy that work the exact same way. They accept both column expressions and strings as well as multiple columns. The default is to sort in ascending order.
+df.sort("count").show(5) 
+df.orderBy("count", "DEST_COUNTRY_NAME").show(5) 
+df.orderBy(col("count"), col("DEST_COUNTRY_NAME")).show(5)
+
+> To more explicitly specify sort direction, you need to use the asc and desc functions if operating on a column. These allow you to specify the order in which a given column should be sorted:
+from pyspark.sql.functions import desc, asc 
+df.orderBy(expr("count desc")).show(2) 
+df.orderBy(col("count").desc(), col("DEST_COUNTRY_NAME").asc()).show(2) 
+-- in 
+SQL SELECT * FROM dfTable ORDER BY count DESC, DEST_COUNTRY_NAME ASC LIMIT 2
+
+#Limit: 
+df.limit(10).show()
+
+#Repartition and Coalesce:
+> Another important optimization opportunity is to partition the data according to some frequently filtered columns, which control the physical layout of data across the cluster including the partitioning scheme and the number of partitions. 
+
+> Repartition will incur a full shuffle of the data, regardless of whether one is necessary. This means that you should typically only repartition when the future number of partitions is greater than your current number of partitions or when you are looking to partition by a set of columns:
+
+df.rdd.getNumPartitions() #1 
+df.repartition(5)
+df.repartition(5, col("DEST_COUNTRY_NAME"))
+
+> Coalesce, on the other hand, will not incur a full shuffle and will try to combine partitions. This operation will shuffle your data into five partitions based on the destination country name, and then coalesce them (without a full shuffle):
+df.repartition(5, col("DEST_COUNTRY_NAME")).coalesce(2)
+
+#Collecting Rows to the Driver:
+collectDF = df.limit(10)
+collectDF.take(5) # take works with an Integer count 
+collectDF.show() # this prints it out nicely 
+collectDF.show(5, False) 
+collectDF.collect()
+
+
+
+
+
+
