@@ -84,4 +84,57 @@ Search for a string in all files recursively
 > grep -r "string" *
 
 3: find command
+Find files using file-name(case in-sensitive find)
+> find -iname "file_name"
 
+Execute commands on files found by find command
+> find -iname "file_name" -exec md5sum {} \;
+
+Find all empty files in home directory
+> find ~ -empty
+
+4: sed command : sed is stream editor
+> sed 's/cat/dog/' file.txt : It will replace all occurence of cat with dog
+
+5: awk command : It is used for data extraction and reporting
+> awk '{print $2}' file.txt
+
+Remove duplicate lines using awk
+> awk '!($0 in array) {array[$0]; print}' temp
+
+Print all lines from /etc/passwd that have same uid & gid
+> awk -F ':' '$3==$4' passwd.txt
+
+6: vim commands
+Go to the nth line
+> vim +10 file_name
+
+Go to the first match of the specified
+> vim +/seartc-term file_name
+
+Open the file in read-only mode
+> vim -R /etc/passwd
+
+7: diff command example
+Ignore white space while comparing
+> diff -w file file_new
+
+8: sort command
+sort a file ascending order
+> sort file_name
+
+Sort a file in descending order
+> sort -r file_name
+
+9: export command
+To view oracle related environment
+> export | grep oracle
+
+To export an environment variable
+> export ORACLE_HOME = /home/oracle
+
+10: xargs command : By default xargs reads items from standard input as separated by blanks and executes a command once for each argument.
+Perform pultiple commands through single command
+> echo dir1 dir2 dire3 | xargs mkdir
+
+11: 
