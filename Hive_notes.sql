@@ -357,16 +357,21 @@ Load dataset into table:
 ------------------------
 load data local inpath '/home/vivekyadav/input/json_test/json_test.json' into table josn_test;
 
+HCatalog in hive: It is table management tool, it exposes the tabular data of hive metastore to other tools to help in sharing the metstore for data access.
 
 Hive tables for sequence file formats:
 --------------------------------------
-2; SEQUENCE file format
+2; SEQUENCE file format : Hive has its own sequence file format reader and writer.
+
+
+org.apache.hadoop.mapred.SequenceFileInputFormat
+org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat
 
 Dataset:
 --------
 
 
-DDL:
+DDL: create table table_name (schema of the table) row format delimited fileds terminated by ',' | stored as SEQUENCEFILE;
 ----
 
 
@@ -526,6 +531,9 @@ from patient;
 3       222     150000  250000  150000
 7       333     110000  110000  110000
 8       444     10000   10000   10000
+
+--Cumulative sum and avg
+select name, amount, sum(aount) over (order by name rows between unbounded preceeding and current row) as cum_sum from patient;
 
 --#Hive Transactional tables:
 ----------------------------
@@ -718,5 +726,24 @@ select /*+ MAPJOIN(dataset2)*/ d1.id,d1.first_name,d2.id from dataset1 d1 join d
 select d1.id,d1.first_name,d2.id from dataset1 d1 join dataset2 d2 on d1.first_name=d2.first_name limit 10; --Time taken: 20.21 secs
 
 --Performing bucket_map_join
+
+--Skipping header while reading data into hove table
+create table tbl_nm() row format delimited fields ternminated by ',' location '/home/hive' TBLPROPERTIES("skip.header.line.count"="2");
+
+--Access sub directories recusrsively
+set mapreduce.input.dir.recursive=true;
+set hive.mapreduce.supports.subdirectories=true;
+
+--Components used in hive query processor
+Logical plan generation
+Physical plan generation
+Execution Engine
+Operators
+UDFs & UDTFs
+Optimizer
+Parser
+Semantic analyzer
+Type checking
+
 
 *************************************
