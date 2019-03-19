@@ -293,7 +293,24 @@ collectDF.show(5, False)
 collectDF.collect()
 
 
+> Crosstab transformation: It is used to calculate the frequency across the tabs:
+train.crosstab("Age", "Gender").show()
++----------+-----+------+
+|Age_Gender|    F|     M|
++----------+-----+------+
+|      0-17| 5083| 10019|
+|     46-50|13199| 32502|
+|     18-25|24628| 75032|
+|     36-45|27170| 82843|
+|       55+| 5083| 16421|
+|     51-55| 9894| 28607|
+|     26-35|50752|168835|
++----------+-----+------+
 
-
-
-
+> """To create sample DF from base DF"""
+train.sample(False, 0.2, 40).show(5)
+print(train.sample(False, 0.2, 40).count())
+train.sample(False, 0.3, 40).show(5)
+print(train.sample(False, 0.3, 40).count())
+train.sample(False, 0.5, 40).show(5)
+print(train.sample(False, 0.5, 40).count())
