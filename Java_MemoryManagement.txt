@@ -1,0 +1,26 @@
+JVM Architecture:
+-----------------
+Java source file --> Java compiler --> Java_test.class file --> Give to executer
+
+Class loader sub-system: .class file is input to this system.
+	Loading  Linking  Initialization
+	To load the class some memory required.
+	Various memory areas present inside JVM.
+		Method area --> Class level data and static variables
+		Heap area --> Object data(Object variables) and instance variables.
+		Stack area --> For every seperate thread seperate run time stack created(Every stack frame contain three parts).
+		PC registers --> PC registers for every threads(PC reg for t1, t2 etc.)
+		Native method stacks --> For every threads.
+		           |
+				   |
+			Execution Engine : Central component of JVM
+				Interpretor
+				JIT compiler
+				Garbage Collecter
+				Security Manager
+
+Java memory Management:
+-----------------------
+Heap area:
+	Young generation
+	Old generation

@@ -1,0 +1,134 @@
+Start the HBase shell:
+----------------------
+#hbase shell
+
+Commands:
+---------
+> list --> To see the tables
+
+Create the table:
+-----------------
+> create 'table_name', 'column_family'
+Ex:
+create 'htest', 'cf'
+
+Store the data into table:
+--------------------------
+> put 'table_name', 'ROW_KEY', 'column_family:column_name1', 'value1'
+> put 'table_name', 'ROW_KEY', 'column_family:column_name2', 'value2'
+Ex:
+> put 'htest','r1','cf:c1','v1'
+> put 'htest','r1','cf:c2','v2'
+> put 'htest','r1','cf:c3','v3'
+
+Retrieve the data from HBase table:
+-----------------------------------
+> scan 'table_name' (It works like select * like in SQL)
+> get 'table_name', 'ROW_KEY'
+Ex:
+> scan 'htest'
+ROW                                      COLUMN+CELL
+ r1                                      column=cf:c1, timestamp=1553748149663, value=v1
+ r1                                      column=cf:c2, timestamp=1553748234683, value=v2
+ r1                                      column=cf:c3, timestamp=1553748242940, value=v3
+
+> get 'htest','r1'
+COLUMN                                   CELL
+ cf:c1                                   timestamp=1553748149663, value=v1
+ cf:c2                                   timestamp=1553748234683, value=v2
+ cf:c3                                   timestamp=1553748242940, value=v3
+
+> get 'htest','r1','cf:c1'
+COLUMN                                   CELL
+ cf:c1                                   timestamp=1553748149663, value=v1
+
+Update/Modify records:
+----------------------
+> put 'table_name', 'ROW_KEY', 'column_family:column_name1', 'value-modified' 
+(It is smimilar like insert the data in table, if record is already available with against the corresponding ROW_KEY then it will be modified otherwise it will insert as new record.)
+
+EX:
+> put 'htest','r1','cf:c3','v3_updated'
+> scan 'htest'
+ROW                                      COLUMN+CELL
+ r1                                      column=cf:c1, timestamp=1553748149663, value=v1
+ r1                                      column=cf:c2, timestamp=1553748234683, value=v2
+ r1                                      column=cf:c3, timestamp=1553749429150, value=v3_update
+ 
+>  put 'htest','r1','cf:c3','v3_updated_3'
+> scan 'htest'
+ROW                                      COLUMN+CELL
+ r1                                      column=cf:c1, timestamp=1553748149663, value=v1
+ r1                                      column=cf:c2, timestamp=1553748234683, value=v2
+ r1                                      column=cf:c3, timestamp=1553749470966, value=v3_updated_3
+
+Retrieve the older versions of records:
+-------------------------------------
+> get 'htest','r1',{COLUMN=>'cf:c3',VERSION=>3} (It should show last three versions but due to conf it is showing only 1 record here.)
+> get 'htest','r1',{COLUMN=>'cf:c3',TIMESTAMP=1553749470966} (To retriev the older version of records)
+
+Delete the record:
+------------------
+> delete 'table_name', 'ROW_KEY', 'column_family:column_name1'
+Ex:
+> delete 'htest','r1','cf:c3'
+
+Drop/alter table:
+-----------------
+> disable 'table_name'  (step-1)
+> drop 'table_name'   (step-2)
+
+> disable 'test'
+> alter 'htest',{NAME=>'cf_altered'} (To add a new column_family in existing table)
+> enable 'htest'
+> describe 'htest'
+Table htest is ENABLED
+htest
+COLUMN FAMILIES DESCRIPTION
+{NAME => 'cf', BLOOMFILTER => 'ROW', VERSIONS => '1', IN_MEMORY => 'false', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOREVER', C
+OMPRESSION => 'NONE', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION_SCOPE => '0'}
+{NAME => 'cf_altered', BLOOMFILTER => 'ROW', VERSIONS => '1', IN_MEMORY => 'false', KEEP_DELETED_CELLS => 'FALSE', DATA_BLOCK_ENCODING => 'NONE', TTL => 'FOR
+EVER', COMPRESSION => 'NONE', MIN_VERSIONS => '0', BLOCKCACHE => 'true', BLOCKSIZE => '65536', REPLICATION_SCOPE => '0'}
+
+> put 'htest','r1','cf_altered:c1','v1_altered'		(Insert the values in new cf)
+> put 'htest','r2','cf_altered:c1','v1_altered'	
+
+> disable 'htest'
+> drop 'htest'  (drop the existing table)
+
+Table schema while reading dataframe
+------------------------------------
+
+scan 'emp'
+----------
+ROW                                      COLUMN+CELL
+ r1                                      column=personal data:city, timestamp=1565350880758, value=delhi
+ r1                                      column=personal data:id, timestamp=1565350864905, value=12345
+ r1                                      column=personal data:name, timestamp=1565350848505, value=vivek
+ r1                                      column=professional data:company, timestamp=1565350924739, value=nagarro
+ r2                                      column=professional data:dept, timestamp=1565350948523, value=BigData
+ r2                                      column=professional data:place, timestamp=1565350938475, value=gurgaon
+
+
+Create HBase table and load data into dtarframe
+------------------------------------------------
+http://bigdataplaybook.blogspot.com/2017/01/loading-hbase-table-data-into-spark.html
+
+put 'custumer_info', '101', 'customer:name', 'Satish'
+put 'custumer_info', '101', 'customer:city', 'Bangalore'
+
+put 'custumer_info', '101', 'purchase:product', 'Mobile'
+put 'custumer_info', '101', 'purchase:price', '9000'
+
+put 'custumer_info', '102', 'customer:name', 'Ramya'
+put 'custumer_info', '102', 'customer:city', 'Bangalore'
+put 'custumer_info', '102', 'purchase:product', 'Shoes'
+put 'custumer_info', '102', 'purchase:price', '3500'
+
+put 'custumer_info', '103', 'customer:name', 'Teja'
+put 'custumer_info', '103', 'customer:city', 'Bangalore'
+put 'custumer_info', '103', 'purchase:product', 'Laptop'
+put 'custumer_info', '103', 'purchase:price', '35000'
+
+
+sqlContext.sql("CREATE EXTERNAL TABLE hbase_test.custumer_info (key INT, customer_name STRING, customer_city STRING, product_name STRING, amount FLOAT) STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler' WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, customer:name, customer:city, purchases:product, purchases:price') TBLPROPERTIES('hbase.table.name' = 'custumer_info')")
