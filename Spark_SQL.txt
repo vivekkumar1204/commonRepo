@@ -1,3 +1,15 @@
+Spark with jupyter notebook:
+----------------------------
+conda install -c conda-forge findspark
+
+import findspark
+findspark.init()
+findspark.find()
+import pyspark
+findspark.find()
+
+from pyspark.sql import SparkSession
+
 ****************************************************Spark SQL*************************************************
 DataFrames & DatSets:
 ---------------------
